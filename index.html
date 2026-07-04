@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <!-- =================================================
+       THEME FLASH PREVENTION SCRIPT
+       يجب أن يكون هذا السكريبت أول شيء في <head>
+       لتطبيق الثيم والاتجاه من localStorage قبل رسم الصفحة
+       This script MUST be first in <head> to avoid flash
+  ================================================== -->
+  <script>
+    (function () {
+      // Apply theme before page renders to prevent flash
+      var theme = localStorage.getItem('site_theme') || 'dark';
+      var lang = localStorage.getItem('site_language') || 'ar';
+      var dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('dir', dir);
+      document.documentElement.setAttribute('lang', lang);
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="منصة ملخصات وتيست بانكات مواد الجامعة الأردنية - University of Jordan Course Summaries Platform" />
+  <meta name="keywords" content="الجامعة الأردنية, ملخصات, تيست بانك, University of Jordan, summaries" />
+  <meta name="author" content="UJ Summaries" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ملخصات الجامعة الأردنية" />
+  <meta property="og:description" content="ابحث عن ملخصات المواد وتيست بانكات جميع الكليات بسهولة" />
+  <title>ملخصات الجامعة الأردنية</title>
+
+  <!-- Google Fonts - preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animated" aria-hidden="true">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <header class="navbar" id="navbar" role="banner">
+    <div class="navbar-inner">
+
+      <!-- Logo -->
+      <a href="#" class="navbar-logo" id="nav-logo-link" aria-label="الصفحة الرئيسية">
+        <span class="logo-icon">🎓</span>
+        <span id="nav-site-title" data-i18n="site_title">ملخصات الجامعة الأردنية</span>
+      </a>
+
+      <!-- Nav Links (Desktop) -->
+      <nav class="navbar-links" id="navbar-links" role="navigation" aria-label="التنقل الرئيسي">
+        <a href="#" class="nav-link active" id="nav-home-link" data-view="home" data-i18n="nav_home">الرئيسية</a>
+        <a href="#" class="nav-link" id="nav-colleges-link" data-view="colleges" data-i18n="nav_colleges">الكليات</a>
+        <a href="#" class="nav-link" id="nav-search-link" data-view="search" data-i18n="nav_search">البحث</a>
+      </nav>
+
+      <!-- Controls -->
+      <div class="navbar-controls">
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="theme-toggle-btn" aria-label="تبديل المظهر" title="تبديل المظهر">
+          <span id="theme-icon">🌙</span>
+        </button>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span>🌐</span>
+            <span id="current-lang-label">عربي</span>
+            <span style="font-size:0.7rem; opacity:0.6;">▾</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown" role="listbox" aria-label="اختر اللغة">
+            <div class="lang-option active" data-lang="ar" role="option" tabindex="0">
+              <span class="lang-flag">🇯🇴</span>
+              <span>العربية</span>
+            </div>
+            <div class="lang-option" data-lang="en" role="option" tabindex="0">
+              <span class="lang-flag">🇬🇧</span>
+              <span>English</span>
+            </div>
+            <div class="lang-option" data-lang="fr" role="option" tabindex="0">
+              <span class="lang-flag">🇫🇷</span>
+              <span>Français</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="فتح القائمة" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT (SPA Views)
+  ============================================================ -->
+  <main class="main-content" id="main-content" role="main">
+
+    <!-- ========== VIEW: HOME ========== -->
+    <div class="view active" id="view-home">
+
+      <!-- Hero Section -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container">
+          <div class="hero-badge" aria-label="منصة ملخصات الجامعة الأردنية">
+            <span>🎓</span>
+            <span id="hero-badge-text" data-i18n="site_subtitle">منصة ملخصات الجامعة الأردنية</span>
+          </div>
+
+          <h1 class="hero-title" id="hero-title" data-i18n="hero_title">
+            ملخصات الجامعة الأردنية
+          </h1>
+
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
+            اعثر على ملخصات المواد وتيست بانكات جميع الكليات بسهولة
+          </p>
+
+          <!-- Search Bar -->
+          <div class="search-container" role="search">
+            <div class="search-wrapper">
+              <input
+                type="search"
+                class="search-input"
+                id="hero-search-input"
+                placeholder="ابحث عن مادة، تخصص، أو مدرس..."
+                data-i18n-placeholder="search_placeholder"
+                aria-label="البحث في الموقع"
+                autocomplete="off"
+              />
+              <button class="search-btn" id="hero-search-btn" aria-label="ابحث">
+                <span>🔍</span>
+                <span data-i18n="search_button">بحث</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats — تُحسب ديناميكياً من mergedCollegesData في script.js -->
+          <div class="hero-stats" aria-label="إحصائيات الموقع">
+            <div class="stat-item">
+              <div class="stat-number" id="stats-colleges">0</div>
+              <div class="stat-label" data-i18n="colleges_title">الكليات</div>
+            </div>
+            <div class="stat-divider" aria-hidden="true"></div>
+            <div class="stat-item">
+              <div class="stat-number" id="stats-specs">0</div>
+              <div class="stat-label" data-i18n="specializations_title">التخصصات</div>
+            </div>
+            <div class="stat-divider" aria-hidden="true"></div>
+            <div class="stat-item">
+              <div class="stat-number" id="stats-courses">0</div>
+              <div class="stat-label" data-i18n="courses_title">المواد</div>
+            </div>
+            <div class="stat-divider" aria-hidden="true"></div>
+            <div class="stat-item">
+              <div class="stat-number" id="stats-files">0</div>
+              <div class="stat-label" data-i18n="files_title">الملفات</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Colleges Grid Section -->
+      <section class="section" aria-labelledby="colleges-section-title">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title" id="colleges-section-title" data-i18n="colleges_title">الكليات</h2>
+            <p class="section-subtitle" data-i18n="colleges_subtitle">اختر الكلية للوصول إلى التخصصات والمواد</p>
+          </div>
+
+          <div class="colleges-grid" id="colleges-grid" role="list" aria-label="قائمة الكليات">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /view-home -->
+
+    <!-- ========== VIEW: COLLEGES ========== -->
+    <div class="view" id="view-colleges">
+      <div class="container">
+        <div id="colleges-breadcrumb" class="breadcrumb" aria-label="مسار التنقل" role="navigation"></div>
+        <div class="section-header" style="text-align: start;">
+          <h2 class="section-title" id="colleges-page-title" data-i18n="colleges_title">الكليات</h2>
+        </div>
+        <div class="colleges-grid" id="colleges-grid-page" role="list" aria-label="قائمة الكليات"></div>
+      </div>
+    </div>
+
+    <!-- ========== VIEW: SPECIALIZATIONS ========== -->
+    <div class="view" id="view-specs">
+      <div class="container">
+        <div id="specs-breadcrumb" class="breadcrumb" aria-label="مسار التنقل" role="navigation"></div>
+        <button class="back-btn" id="specs-back-btn" aria-label="رجوع">
+          <span id="specs-back-icon">←</span>
+          <span data-i18n="back">رجوع</span>
+        </button>
+        <div class="section-header" style="text-align: start;">
+          <h2 class="section-title" id="specs-page-title" data-i18n="specializations_title">التخصصات</h2>
+        </div>
+        <div class="spec-grid" id="spec-grid" role="list" aria-label="قائمة التخصصات"></div>
+      </div>
+    </div>
+
+    <!-- ========== VIEW: COURSES ========== -->
+    <div class="view" id="view-courses">
+      <div class="container">
+        <div id="courses-breadcrumb" class="breadcrumb" aria-label="مسار التنقل" role="navigation"></div>
+        <button class="back-btn" id="courses-back-btn" aria-label="رجوع">
+          <span id="courses-back-icon">←</span>
+          <span data-i18n="back">رجوع</span>
+        </button>
+        <div class="section-header" style="text-align: start;">
+          <h2 class="section-title" id="courses-page-title" data-i18n="courses_title">المواد</h2>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar" id="courses-filter-bar" role="group" aria-label="تصفية الملفات">
+          <span class="filter-label" id="filter-label">نوع الملفات:</span>
+          <button class="filter-btn active" data-filter="all" id="filter-all-btn">الكل</button>
+          <button class="filter-btn" data-filter="summary" id="filter-summary-btn">ملخصات</button>
+          <button class="filter-btn" data-filter="testbank" id="filter-testbank-btn">تيست بانك</button>
+        </div>
+
+        <div class="courses-grid" id="courses-grid" role="list" aria-label="قائمة المواد"></div>
+      </div>
+    </div>
+
+    <!-- ========== VIEW: COURSE DETAIL ========== -->
+    <div class="view" id="view-course-detail">
+      <div class="container">
+        <div id="course-breadcrumb" class="breadcrumb" aria-label="مسار التنقل" role="navigation"></div>
+        <button class="back-btn" id="course-back-btn" aria-label="رجوع">
+          <span id="course-back-icon">←</span>
+          <span data-i18n="back">رجوع</span>
+        </button>
+
+        <!-- Course Header -->
+        <div class="course-header" id="course-detail-header">
+          <h1 class="course-header-title" id="course-detail-title"></h1>
+          <div class="course-meta-row" id="course-meta-row"></div>
+        </div>
+
+        <!-- Files Tabs -->
+        <div class="files-tabs" id="files-tabs" role="tablist" aria-label="تصنيف الملفات">
+          <button class="files-tab active" data-tab="all" id="tab-all" role="tab" aria-selected="true">الكل</button>
+          <button class="files-tab" data-tab="summary" id="tab-summary" role="tab" aria-selected="false">ملخصات</button>
+          <button class="files-tab" data-tab="testbank" id="tab-testbank" role="tab" aria-selected="false">تيست بانك</button>
+        </div>
+
+        <!-- Files Grid -->
+        <div class="files-grid" id="files-grid" role="list" aria-label="قائمة الملفات"></div>
+
+      </div>
+    </div>
+
+    <!-- ========== VIEW: SEARCH RESULTS ========== -->
+    <div class="view" id="view-search">
+      <div class="container" style="padding-top: 40px;">
+        <h2 class="section-title" data-i18n="search_results" style="margin-bottom: 24px;">نتائج البحث</h2>
+
+        <!-- Search Input (in search page) -->
+        <div class="search-page-input-wrapper" role="search">
+          <div class="search-wrapper">
+            <input
+              type="search"
+              class="search-input"
+              id="search-page-input"
+              placeholder="ابحث عن مادة، تخصص، أو مدرس..."
+              data-i18n-placeholder="search_placeholder"
+              aria-label="البحث في الموقع"
+              autocomplete="off"
+            />
+            <button class="search-btn" id="search-page-btn">
+              <span>🔍</span>
+              <span data-i18n="search_button">بحث</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Header -->
+        <div class="search-results-header" id="search-results-header"></div>
+
+        <!-- Results List -->
+        <div id="search-results-list" role="list" aria-label="نتائج البحث"></div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>🎓</span>
+        <span data-i18n="site_title">ملخصات الجامعة الأردنية</span>
+      </div>
+      <div class="footer-text">
+        <span data-i18n="footer_for">لطلاب الجامعة الأردنية</span>
+      </div>
+      <div class="footer-links">
+        <a href="admin.html" class="footer-link" data-i18n="nav_admin">لوحة الإدارة</a>
+      </div>
+    </div>
+    <div class="footer-disclaimer container">
+      <span data-i18n="footer_disclaimer">هذا الموقع غير رسمي وهو منصة طلابية مستقلة</span>
+      &nbsp;·&nbsp;
+      <span>© <span id="footer-year"></span></span>
+      &nbsp;
+      <span data-i18n="footer_rights">جميع الحقوق محفوظة</span>
+    </div>
+  </footer>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ============================================================
+       SCRIPTS - Load in correct order
+  ============================================================ -->
+  <script src="translations.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
