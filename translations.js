@@ -86,10 +86,10 @@ const translations = {
     footer_rights: "جميع الحقوق محفوظة",
     footer_made_with: "صُنع بـ",
     footer_for: "لطلاب الجامعة الأردنية",
-    footer_disclaimer: "هذا الموقع غير رسمي وهو منصة طلابية مستقلة",
+    footer_disclaimer: "هذا الموقع غير رسمي وهو منصة طلابية مستقلة من اعداد يوسف خالد عبدالهادي",
 
     // Admin Panel
-    admin_title: "لوحة الإدارة",
+    admin_title: "مجموعة التيليغرام للملخصات",
     admin_subtitle: "إضافة وإدارة محتوى الموقع",
     admin_add_course: "إضافة مادة جديدة",
     admin_add_file: "إضافة ملف",
@@ -231,10 +231,10 @@ const translations = {
     footer_rights: "All rights reserved",
     footer_made_with: "Made with",
     footer_for: "for University of Jordan students",
-    footer_disclaimer: "This is an unofficial site and an independent student platform",
+    footer_disclaimer: "This website is unofficial, and it is an independent student platform prepared by Yousef Khaled Abdulhadi.",
 
     // Admin Panel
-    admin_title: "Admin Panel",
+    admin_title: "Telegram summaries group",
     admin_subtitle: "Add and manage website content",
     admin_add_course: "Add New Course",
     admin_add_file: "Add File",
@@ -376,10 +376,10 @@ const translations = {
     footer_rights: "Tous droits réservés",
     footer_made_with: "Fait avec",
     footer_for: "pour les étudiants de l'Université de Jordanie",
-    footer_disclaimer: "Ce site est non officiel et est une plateforme étudiante indépendante",
+    footer_disclaimer: "Ce site est non officiel et constitue une plateforme étudiante indépendante préparée par Yousef Khaled Abdulhadi.",
 
     // Admin Panel
-    admin_title: "Panneau d'administration",
+    admin_title: "Groupe Telegram des résumés",
     admin_subtitle: "Ajouter et gérer le contenu du site",
     admin_add_course: "Ajouter un nouveau cours",
     admin_add_file: "Ajouter un fichier",
