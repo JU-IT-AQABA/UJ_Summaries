@@ -139,7 +139,7 @@ function toggleTheme() {
 function updateThemeIcon() {
   const icon = document.getElementById('theme-icon');
   if (icon) {
-    icon.textContent = AppState.currentTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    icon.textContent = AppState.currentTheme === 'dark' ?  '☀️' : '🌙';
   }
 }
 
