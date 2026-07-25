@@ -18,7 +18,7 @@ const translations = {
     nav_home: "الرئيسية",
     nav_colleges: "الكليات",
     nav_search: "البحث",
-    nav_admin: "لوحة الإدارة",
+    nav_admin: "مجموعة التيليغرام للملخصات",
 
     // Hero Section
     hero_title: "ملخصات الجامعة الأردنية",
@@ -163,7 +163,7 @@ const translations = {
     nav_home: "Home",
     nav_colleges: "Colleges",
     nav_search: "Search",
-    nav_admin: "Admin Panel",
+    nav_admin: "Telegram summaries group",
 
     // Hero Section
     hero_title: "University of Jordan Summaries",
@@ -308,7 +308,7 @@ const translations = {
     nav_home: "Accueil",
     nav_colleges: "Facultés",
     nav_search: "Recherche",
-    nav_admin: "Administration",
+    nav_admin: "Groupe Telegram des résumés",
 
     // Hero Section
     hero_title: "Résumés de l'Université de Jordanie",
