@@ -29,6 +29,8 @@ const translations = {
     // Sections
     colleges_title: "الكليات",
     colleges_subtitle: "اختر الكلية للوصول إلى التخصصات والمواد",
+    common_courses_title: "مواد الجامعة المشتركة",
+    common_courses_subtitle: "مواد الجامعة الإجبارية والاختيارية لجميع التخصصات",
     specializations_title: "التخصصات",
     courses_title: "المواد",
     files_title: "الملفات",
@@ -86,7 +88,7 @@ const translations = {
     footer_rights: "جميع الحقوق محفوظة",
     footer_made_with: "صُنع بـ",
     footer_for: "لطلاب الجامعة الأردنية",
-    footer_disclaimer: "هذا الموقع غير رسمي وهو منصة طلابية مستقلة من اعداد يوسف خالد عبدالهادي",
+    footer_disclaimer: ".هذا الموقع غير رسمي وهو منصة طلابية مستقلة من اعداد يوسف خالد عبدالهادي",
 
     // Admin Panel
     admin_title: "مجموعة التيليغرام للملخصات",
@@ -174,6 +176,8 @@ const translations = {
     // Sections
     colleges_title: "Colleges",
     colleges_subtitle: "Select a college to browse specializations and courses",
+    common_courses_title: "Common University Courses",
+    common_courses_subtitle: "Compulsory and elective university courses for all majors",
     specializations_title: "Specializations",
     courses_title: "Courses",
     files_title: "Files",
@@ -319,6 +323,8 @@ const translations = {
     // Sections
     colleges_title: "Facultés",
     colleges_subtitle: "Sélectionnez une faculté pour parcourir les spécialisations et les cours",
+    common_courses_title: "Cours universitaires communs",
+    common_courses_subtitle: "Cours universitaires obligatoires et optionnels pour toutes les spécialisations",
     specializations_title: "Spécialisations",
     courses_title: "Cours",
     files_title: "Fichiers",
@@ -376,7 +382,7 @@ const translations = {
     footer_rights: "Tous droits réservés",
     footer_made_with: "Fait avec",
     footer_for: "pour les étudiants de l'Université de Jordanie",
-    footer_disclaimer: "Ce site est non officiel et constitue une plateforme étudiante indépendante préparée par Yousef Khaled Abdulhadi.",
+    footer_disclaimer: "This website is unofficial, and it is an independent student platform prepared by Yousef Khaled Abdulhadi.",
 
     // Admin Panel
     admin_title: "Groupe Telegram des résumés",
