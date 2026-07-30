@@ -95,4 +95,4 @@ git commit -m "Initial commit: UJ Summaries Platform"
 git remote add origin https://ju-it-aqaba.github.io/UJ_Summaries/
 git push -u origin main
 ```
-Made with love for University of Jordan students
+Made with love for University of Jordan students by Yousef Khaled Abdelhadi
