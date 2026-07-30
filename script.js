@@ -59,20 +59,46 @@ function buildMergedData() {
     const spec = college.specializations.find((s) => s.id === entry.specId);
     if (!spec) return;
 
-    // تحقق أن المادة غير مضافة مسبقاً (بالـ id)
-    const exists = spec.courses.find((c) => c.id === entry.id);
+    // تحقق أن المادة غير مضافة مسبقاً (بالـ id أو الاسم)
+    const exists = spec.courses.find((c) => c.id === entry.id || getName(c.name) === getName(entry.name));
     if (exists) {
-      // حدّث الملفات والمدرسين إن تغيروا
-      exists.files = entry.files;
-      exists.instructors = entry.instructors;
+      const seenPaths = new Set(exists.files.map((f) => f.path || f.id));
+      (entry.files || []).forEach((f) => {
+        const key = f.path || f.id;
+        if (!seenPaths.has(key)) {
+          seenPaths.add(key);
+          exists.files.push(f);
+        }
+      });
+      if (entry.instructors && entry.instructors.length) {
+        exists.instructors = entry.instructors;
+      }
     } else {
       spec.courses.push({
         id: entry.id,
         name: entry.name,
         instructors: entry.instructors,
-        files: entry.files,
+        files: entry.files || [],
       });
     }
+  });
+
+  // تنظيف وتأكيد عدم وجود أي ملفات مكررة مطلقا
+  merged.forEach((college) => {
+    college.specializations.forEach((spec) => {
+      spec.courses.forEach((course) => {
+        const uniqueFiles = [];
+        const seen = new Set();
+        (course.files || []).forEach((file) => {
+          const key = file.path || file.id;
+          if (!seen.has(key)) {
+            seen.add(key);
+            uniqueFiles.push(file);
+          }
+        });
+        course.files = uniqueFiles;
+      });
+    });
   });
 
   return merged;
@@ -112,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initSearch();
   renderCollegesGrid('colleges-grid');
+  renderCommonCoursesGrid('common-courses-grid');
   updateStats();
   setFooterYear();
   initNavbarScroll();
@@ -139,7 +166,7 @@ function toggleTheme() {
 function updateThemeIcon() {
   const icon = document.getElementById('theme-icon');
   if (icon) {
-    icon.textContent = AppState.currentTheme === 'dark' ?  '☀️' : '🌙';
+    icon.innerHTML = AppState.currentTheme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
   }
 }
 
@@ -271,7 +298,13 @@ function initNavigation() {
 
   document.getElementById('specs-back-btn')?.addEventListener('click', () => showCollegesView());
   document.getElementById('courses-back-btn')?.addEventListener('click', () => {
-    if (AppState.selectedCollege) showSpecsView(AppState.selectedCollege);
+    if (AppState.selectedCollege) {
+      if (AppState.selectedCollege.id === 'common-courses') {
+        showView('home');
+      } else {
+        showSpecsView(AppState.selectedCollege);
+      }
+    }
   });
   document.getElementById('course-back-btn')?.addEventListener('click', () => {
     if (AppState.selectedCollege && AppState.selectedSpec) {
@@ -323,6 +356,7 @@ function rerenderCurrentView() {
   const view = AppState.currentView;
   if (view === 'home') {
     renderCollegesGrid('colleges-grid');
+    renderCommonCoursesGrid('common-courses-grid');
     translatePage();
   } else if (view === 'colleges') {
     showCollegesView();
@@ -334,8 +368,13 @@ function rerenderCurrentView() {
     const freshCollege = window.mergedCollegesData.find((c) => c.id === AppState.selectedCollege.id);
     const freshSpec = freshCollege?.specializations.find((s) => s.id === AppState.selectedSpec.id);
     if (freshCollege && freshSpec) showCoursesView(freshCollege, freshSpec);
-  } else if (view === 'course-detail' && AppState.selectedCourse) {
-    showCourseDetail(AppState.selectedCollege, AppState.selectedSpec, AppState.selectedCourse);
+  } else if (view === 'course-detail' && AppState.selectedCollege && AppState.selectedSpec && AppState.selectedCourse) {
+    const freshCollege = window.mergedCollegesData?.find((c) => c.id === AppState.selectedCollege.id);
+    const freshSpec = freshCollege?.specializations.find((s) => s.id === AppState.selectedSpec.id);
+    const freshCourse = freshSpec?.courses.find((co) => co.id === AppState.selectedCourse.id || getName(co.name) === getName(AppState.selectedCourse.name));
+    if (freshCollege && freshSpec && freshCourse) {
+      showCourseDetail(freshCollege, freshSpec, freshCourse);
+    }
   } else if (view === 'search') {
     performSearch(AppState.searchQuery);
   }
@@ -364,6 +403,7 @@ function renderCollegesGrid(containerId) {
   const data = window.mergedCollegesData || collegesData;
 
   data.forEach((college) => {
+    if (college.id === 'common-courses') return;
     const card = document.createElement('div');
     card.className = 'college-card';
     card.setAttribute('role', 'listitem');
@@ -380,8 +420,8 @@ function renderCollegesGrid(containerId) {
       <span class="college-icon" aria-hidden="true">${college.icon}</span>
       <h3 class="college-name">${getName(college.name)}</h3>
       <div class="college-meta">
-        <span class="college-meta-badge">📂 ${specCount} ${t('specializations_title')}</span>
-        <span class="college-meta-badge">📖 ${courseCount} ${t('courses_title')}</span>
+        <span class="college-meta-badge"><i class="fa-solid fa-folder-open"></i> ${specCount} ${t('specializations_title')}</span>
+        <span class="college-meta-badge"><i class="fa-solid fa-book-open"></i> ${courseCount} ${t('courses_title')}</span>
       </div>
       <span class="college-arrow" aria-hidden="true">${AppState.currentLang === 'ar' ? '←' : '→'}</span>
     `;
@@ -391,6 +431,53 @@ function renderCollegesGrid(containerId) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         showSpecsView(college);
+      }
+    });
+
+    container.appendChild(card);
+  });
+}
+
+function renderCommonCoursesGrid(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  const data = window.mergedCollegesData || collegesData;
+  const commonCollege = data.find((c) => c.id === 'common-courses');
+  if (!commonCollege) return;
+
+  commonCollege.specializations.forEach((spec) => {
+    const card = document.createElement('div');
+    card.className = 'college-card';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', getName(spec.name));
+    card.style.setProperty('--card-color', spec.id === 'compulsory-courses' ? '#10b981' : '#f59e0b');
+
+    const courseCount = spec.courses.length;
+    const fileCount = spec.courses.reduce((sum, c) => sum + (c.files ? c.files.length : 0), 0);
+
+    const icon = spec.id === 'compulsory-courses'
+      ? '<i class="fa-solid fa-certificate"></i>'
+      : '<i class="fa-solid fa-compass"></i>';
+
+    card.innerHTML = `
+      <span class="college-icon" aria-hidden="true">${icon}</span>
+      <h3 class="college-name">${getName(spec.name)}</h3>
+      <div class="college-meta">
+        <span class="college-meta-badge"><i class="fa-solid fa-book-open"></i> ${courseCount} ${t('courses_title')}</span>
+        <span class="college-meta-badge"><i class="fa-solid fa-file-pdf"></i> ${fileCount} ${t('files_title')}</span>
+      </div>
+      <span class="college-arrow" aria-hidden="true">${AppState.currentLang === 'ar' ? '←' : '→'}</span>
+    `;
+
+    card.addEventListener('click', () => showCoursesView(commonCollege, spec));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showCoursesView(commonCollege, spec);
       }
     });
 
@@ -431,7 +518,7 @@ function showSpecsView(college) {
       </div>
       <div class="spec-info">
         <div class="spec-name">${getName(spec.name)}</div>
-        <div class="spec-count">📖 ${spec.courses.length} ${t('courses_title')}</div>
+        <div class="spec-count"><i class="fa-solid fa-book-open"></i> ${spec.courses.length} ${t('courses_title')}</div>
       </div>
       <span class="spec-arrow" aria-hidden="true">${AppState.currentLang === 'ar' ? '‹' : '›'}</span>
     `;
@@ -464,12 +551,17 @@ function showCoursesView(college, spec) {
   document.getElementById('filter-summary-btn').textContent = t('tab_summaries');
   document.getElementById('filter-testbank-btn').textContent = t('tab_testbank');
 
-  setBreadcrumb('courses-breadcrumb', [
-    { label: t('breadcrumb_home'), viewFn: () => showView('home') },
-    { label: t('colleges_title'), viewFn: () => showCollegesView() },
-    { label: getName(college.name), viewFn: () => showSpecsView(college) },
-    { label: getName(spec.name), active: true },
-  ]);
+  const breadcrumbItems = [
+    { label: t('breadcrumb_home'), viewFn: () => showView('home') }
+  ];
+  if (college.id === 'common-courses') {
+    breadcrumbItems.push({ label: getName(college.name), viewFn: () => showView('home') });
+  } else {
+    breadcrumbItems.push({ label: t('colleges_title'), viewFn: () => showCollegesView() });
+    breadcrumbItems.push({ label: getName(college.name), viewFn: () => showSpecsView(college) });
+  }
+  breadcrumbItems.push({ label: getName(spec.name), active: true });
+  setBreadcrumb('courses-breadcrumb', breadcrumbItems);
 
   const titleEl = document.getElementById('courses-page-title');
   if (titleEl) titleEl.textContent = getName(spec.name);
@@ -494,7 +586,7 @@ function renderCourses() {
   if (freshSpec.courses.length === 0) {
     container.innerHTML = `
       <div class="no-files" style="grid-column: 1/-1;">
-        <span class="no-files-icon">📭</span>
+        <span class="no-files-icon"><i class="fa-solid fa-folder-open"></i></span>
         <p class="no-files-text">${t('no_files')}</p>
         <p style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">
           ${AppState.currentLang === 'ar'
@@ -524,14 +616,14 @@ function renderCourses() {
       : '—';
 
     const badges = [];
-    if (summaryCount > 0) badges.push(`<span class="file-type-badge badge-summary">📄 ${summaryCount} ${t('tab_summaries')}</span>`);
-    if (testbankCount > 0) badges.push(`<span class="file-type-badge badge-testbank">📝 ${testbankCount} ${t('tab_testbank')}</span>`);
-    if (badges.length === 0) badges.push(`<span class="file-type-badge" style="background:var(--bg-input); color:var(--text-muted)">📂 ${t('no_files')}</span>`);
+    if (summaryCount > 0) badges.push(`<span class="file-type-badge badge-summary"><i class="fa-solid fa-file-lines"></i> ${summaryCount} ${t('tab_summaries')}</span>`);
+    if (testbankCount > 0) badges.push(`<span class="file-type-badge badge-testbank"><i class="fa-solid fa-clipboard-question"></i> ${testbankCount} ${t('tab_testbank')}</span>`);
+    if (badges.length === 0) badges.push(`<span class="file-type-badge" style="background:var(--bg-input); color:var(--text-muted)"><i class="fa-solid fa-folder-open"></i> ${t('no_files')}</span>`);
 
     card.innerHTML = `
       <h3 class="course-name">${getName(course.name)}</h3>
       <div class="course-instructors">
-        <span>👨‍🏫</span>
+        <span><i class="fa-solid fa-user-tie"></i></span>
         <span>${instructorText}</span>
       </div>
       <div class="course-files-count">${badges.join('')}</div>
@@ -554,7 +646,7 @@ function renderCourses() {
   if (container.children.length === 0) {
     container.innerHTML = `
       <div class="no-files" style="grid-column: 1/-1;">
-        <span class="no-files-icon">📭</span>
+        <span class="no-files-icon"><i class="fa-solid fa-folder-open"></i></span>
         <p class="no-files-text">${t('no_files')}</p>
       </div>
     `;
@@ -576,17 +668,30 @@ function showCourseDetail(college, spec, course) {
     tab.setAttribute('aria-selected', tab.dataset.tab === 'all' ? 'true' : 'false');
   });
 
-  document.getElementById('tab-all').textContent = t('tab_all');
-  document.getElementById('tab-summary').textContent = t('tab_summaries');
-  document.getElementById('tab-testbank').textContent = t('tab_testbank');
+  const allCount = course.files ? course.files.length : 0;
+  const summaryCount = course.files ? course.files.filter((f) => f.type === 'summary').length : 0;
+  const testbankCount = course.files ? course.files.filter((f) => f.type === 'testbank').length : 0;
 
-  setBreadcrumb('course-breadcrumb', [
-    { label: t('breadcrumb_home'), viewFn: () => showView('home') },
-    { label: t('colleges_title'), viewFn: () => showCollegesView() },
-    { label: getName(college.name), viewFn: () => showSpecsView(college) },
-    { label: getName(spec.name), viewFn: () => showCoursesView(college, spec) },
-    { label: getName(course.name), active: true },
-  ]);
+  const tabAllEl = document.getElementById('tab-all');
+  const tabSummaryEl = document.getElementById('tab-summary');
+  const tabTestbankEl = document.getElementById('tab-testbank');
+
+  if (tabAllEl) tabAllEl.textContent = `${t('tab_all')} (${allCount})`;
+  if (tabSummaryEl) tabSummaryEl.textContent = `${t('tab_summaries')} (${summaryCount})`;
+  if (tabTestbankEl) tabTestbankEl.textContent = `${t('tab_testbank')} (${testbankCount})`;
+
+  const breadcrumbItems = [
+    { label: t('breadcrumb_home'), viewFn: () => showView('home') }
+  ];
+  if (college.id === 'common-courses') {
+    breadcrumbItems.push({ label: getName(college.name), viewFn: () => showView('home') });
+  } else {
+    breadcrumbItems.push({ label: t('colleges_title'), viewFn: () => showCollegesView() });
+    breadcrumbItems.push({ label: getName(college.name), viewFn: () => showSpecsView(college) });
+  }
+  breadcrumbItems.push({ label: getName(spec.name), viewFn: () => showCoursesView(college, spec) });
+  breadcrumbItems.push({ label: getName(course.name), active: true });
+  setBreadcrumb('course-breadcrumb', breadcrumbItems);
 
   const titleEl = document.getElementById('course-detail-title');
   if (titleEl) titleEl.textContent = getName(course.name);
@@ -600,22 +705,22 @@ function showCourseDetail(college, spec, course) {
 
     metaRow.innerHTML = `
       <div class="course-meta-item">
-        <span>🏛️</span>
+        <span><i class="fa-solid fa-building-columns"></i></span>
         <span>${t('course_college')}:</span>
         <strong>${getName(college.name)}</strong>
       </div>
       <div class="course-meta-item">
-        <span>📂</span>
+        <span><i class="fa-solid fa-folder-open"></i></span>
         <span>${t('course_specialization')}:</span>
         <strong>${getName(spec.name)}</strong>
       </div>
       <div class="course-meta-item">
-        <span>👨‍🏫</span>
+        <span><i class="fa-solid fa-user-tie"></i></span>
         <span>${instrLabel}:</span>
         <strong>${instructorText}</strong>
       </div>
       <div class="course-meta-item">
-        <span>📁</span>
+        <span><i class="fa-solid fa-file-pdf"></i></span>
         <span>${t('course_files_count')}:</span>
         <strong>${course.files.length}</strong>
       </div>
@@ -639,7 +744,7 @@ function renderFiles() {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="no-files" style="grid-column: 1/-1;">
-        <span class="no-files-icon">📭</span>
+        <span class="no-files-icon"><i class="fa-solid fa-folder-open"></i></span>
         <p class="no-files-text">${t('no_files')}</p>
         <p class="no-files-sub" style="color:var(--text-muted)">${t('search_no_results_desc')}</p>
       </div>
@@ -650,7 +755,7 @@ function renderFiles() {
   filtered.forEach((file) => {
     const isSummary = file.type === 'summary';
     const typeLabel = isSummary ? t('file_summary') : t('file_testbank');
-    const typeIcon = isSummary ? '📄' : '📝';
+    const typeIcon = isSummary ? '<i class="fa-solid fa-file-lines"></i>' : '<i class="fa-solid fa-clipboard-question"></i>';
     const typeClass = isSummary ? 'summary' : 'testbank';
     const badgeClass = isSummary ? 'badge-summary' : 'badge-testbank';
 
@@ -660,7 +765,7 @@ function renderFiles() {
 
     const preparedBy = file.preparedBy ? getName(file.preparedBy) : null;
     const preparedByHtml = preparedBy
-      ? `<div class="file-card-meta">✏️ ${t('file_prepared_by')}: ${preparedBy}</div>`
+      ? `<div class="file-card-meta"><i class="fa-solid fa-pen-nib"></i> ${t('file_prepared_by')}: ${preparedBy}</div>`
       : '';
 
     let viewUrl = file.path;
@@ -688,11 +793,11 @@ function renderFiles() {
       ${preparedByHtml}
       <div class="file-card-actions">
         <a class="btn-view" href="${viewUrl}" target="_blank" rel="noopener noreferrer" aria-label="${t('file_view')}: ${getName(file.title)}">
-          <span>👁️</span>
+          <span><i class="fa-solid fa-eye"></i></span>
           <span>${t('file_view')}</span>
         </a>
         <a class="btn-download" href="${downloadUrl}" download target="_blank" rel="noopener noreferrer" aria-label="${t('file_download')}: ${getName(file.title)}" title="${t('file_download')}">
-          ⬇️
+          <i class="fa-solid fa-download"></i>
         </a>
       </div>
     `;
@@ -788,7 +893,7 @@ function performSearch(query) {
   if (results.length === 0) {
     list.innerHTML = `
       <div class="no-files" style="padding: 60px 20px;">
-        <span class="no-files-icon">🔍</span>
+        <span class="no-files-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
         <p class="no-files-text">${t('search_no_results')}</p>
         <p class="no-files-sub" style="color:var(--text-muted)">${t('search_no_results_desc')}</p>
       </div>
@@ -907,8 +1012,8 @@ function updateStats() {
   // استخدام mergedCollegesData للإحصائيات الحقيقية
   const data = window.mergedCollegesData || collegesData;
 
-  const totalColleges = data.length;
-  const totalSpecs = data.reduce((s, c) => s + c.specializations.length, 0);
+  const totalColleges = data.filter(c => c.id !== 'common-courses').length;
+  const totalSpecs = data.reduce((s, c) => s + (c.id === 'common-courses' ? 0 : c.specializations.length), 0);
   const totalCourses = data.reduce(
     (s, c) => s + c.specializations.reduce((ss, sp) => ss + sp.courses.length, 0), 0
   );
@@ -941,11 +1046,16 @@ function showToast(message, type = 'info', duration = 3500) {
   const container = document.getElementById('toast-container');
   if (!container) return;
 
-  const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+  const icons = {
+    success: '<i class="fa-solid fa-circle-check" style="color:var(--success)"></i>',
+    error: '<i class="fa-solid fa-circle-xmark" style="color:var(--error)"></i>',
+    info: '<i class="fa-solid fa-circle-info" style="color:var(--info)"></i>',
+    warning: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--warning)"></i>'
+  };
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.setAttribute('role', 'alert');
-  toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${message}</span>`;
+  toast.innerHTML = `<span>${icons[type] || '<i class="fa-solid fa-circle-info"></i>'}</span><span>${message}</span>`;
 
   container.appendChild(toast);
 
