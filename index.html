@@ -34,6 +34,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -54,7 +57,7 @@
 
       <!-- Logo -->
       <a href="#" class="navbar-logo" id="nav-logo-link" aria-label="الصفحة الرئيسية">
-        <span class="logo-icon">🎓</span>
+        <span class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
         <span id="nav-site-title" data-i18n="site_title">ملخصات الجامعة الأردنية</span>
       </a>
 
@@ -70,15 +73,15 @@
 
         <!-- Theme Toggle -->
         <button class="theme-toggle" id="theme-toggle-btn" aria-label="تبديل المظهر" title="تبديل المظهر">
-          <span id="theme-icon">🌙</span>
+          <span id="theme-icon"><i class="fa-solid fa-moon"></i></span>
         </button>
 
         <!-- Language Switcher -->
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="listbox" aria-expanded="false">
-            <span>🌐</span>
+            <span><i class="fa-solid fa-globe"></i></span>
             <span id="current-lang-label">عربي</span>
-            <span style="font-size:0.7rem; opacity:0.6;">▾</span>
+            <span style="font-size:0.7rem; opacity:0.6;"><i class="fa-solid fa-chevron-down"></i></span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown" role="listbox" aria-label="اختر اللغة">
             <div class="lang-option active" data-lang="ar" role="option" tabindex="0">
@@ -119,7 +122,7 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="container">
           <div class="hero-badge" aria-label="منصة ملخصات الجامعة الأردنية">
-            <span>🎓</span>
+            <span><i class="fa-solid fa-graduation-cap"></i></span>
             <span id="hero-badge-text" data-i18n="site_subtitle">منصة ملخصات الجامعة الأردنية</span>
           </div>
 
@@ -134,20 +137,20 @@
           <!-- Search Bar -->
           <div class="search-container" role="search">
             <div class="search-wrapper">
-              <input
-                type="search"
-                class="search-input"
-                id="hero-search-input"
-                placeholder="ابحث عن مادة، تخصص، أو مدرس..."
-                data-i18n-placeholder="search_placeholder"
-                aria-label="البحث في الموقع"
-                autocomplete="off"
-              />
-              <button class="search-btn" id="hero-search-btn" aria-label="ابحث">
-                <span>🔍</span>
-                <span data-i18n="search_button">بحث</span>
-              </button>
-            </div>
+            <input
+              type="search"
+              class="search-input"
+              id="hero-search-input"
+              placeholder="ابحث عن مادة، تخصص، أو مدرس..."
+              data-i18n-placeholder="search_placeholder"
+              aria-label="البحث في الموقع"
+              autocomplete="off"
+            />
+            <button class="search-btn" id="hero-search-btn">
+              <span><i class="fa-solid fa-magnifying-glass"></i></span>
+              <span data-i18n="search_button">بحث</span>
+            </button>
+          </div>
           </div>
 
           <!-- Stats — تُحسب ديناميكياً من mergedCollegesData في script.js -->
@@ -184,6 +187,20 @@
           </div>
 
           <div class="colleges-grid" id="colleges-grid" role="list" aria-label="قائمة الكليات">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Common University Courses Section -->
+      <section class="section" aria-labelledby="common-courses-section-title" style="padding-top: 0;">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title" id="common-courses-section-title" data-i18n="common_courses_title">مواد الجامعة المشتركة</h2>
+            <p class="section-subtitle" data-i18n="common_courses_subtitle">مواد الجامعة الإجبارية والاختيارية لجميع التخصصات</p>
+          </div>
+
+          <div class="colleges-grid" id="common-courses-grid" role="list" aria-label="مواد الجامعة المشتركة">
             <!-- Populated by JavaScript -->
           </div>
         </div>
@@ -287,7 +304,7 @@
               autocomplete="off"
             />
             <button class="search-btn" id="search-page-btn">
-              <span>🔍</span>
+              <span><i class="fa-solid fa-magnifying-glass"></i></span>
               <span data-i18n="search_button">بحث</span>
             </button>
           </div>
@@ -310,14 +327,14 @@
   <footer class="footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-brand">
-        <span>🎓</span>
+        <span><i class="fa-solid fa-graduation-cap"></i></span>
         <span data-i18n="site_title">ملخصات الجامعة الأردنية</span>
       </div>
       <div class="footer-text">
         <span data-i18n="footer_for">لطلاب الجامعة الأردنية</span>
       </div>
       <div class="footer-links">
-        <a href="https://t.me/+IobTJ7ghiJlmMWNk" class="footer-link" data-i18n="nav_admin">مجموعة التليغرام للملخصات</a>
+        <a href="https://t.me/+IobTJ7ghiJlmMWNk" class="footer-link" data-i18n="nav_admin">مجموعة التيليغرام للملخصات</a>
       </div>
     </div>
     <div class="footer-disclaimer container">
