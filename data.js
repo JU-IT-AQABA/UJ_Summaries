@@ -4383,38 +4383,7 @@ const collegesData = [
           "en": "Compulsory University Courses",
           "fr": "Cours universitaires obligatoires"
         },
-        "courses": [
-          {
-            "id": "national-education",
-            "name": {
-              "ar": "التربية الوطنية",
-              "en": "National Education",
-              "fr": "Éducation nationale"
-            },
-            "instructors": [],
-            "files": []
-          },
-          {
-            "id": "military-sciences",
-            "name": {
-              "ar": "العلوم العسكرية",
-              "en": "Military Sciences",
-              "fr": "Sciences militaires"
-            },
-            "instructors": [],
-            "files": []
-          },
-          {
-            "id": "life-skills",
-            "name": {
-              "ar": "مهارات حياتية",
-              "en": "Life Skills",
-              "fr": "Compétences de vie"
-            },
-            "instructors": [],
-            "files": []
-          }
-        ]
+        "courses": []
       },
       {
         "id": "elective-courses",
@@ -4423,38 +4392,7 @@ const collegesData = [
           "en": "Elective University Courses",
           "fr": "Cours universitaires optionnels"
         },
-        "courses": [
-          {
-            "id": "first-aid",
-            "name": {
-              "ar": "الإسعافات الأولية",
-              "en": "First Aid",
-              "fr": "Premiers secours"
-            },
-            "instructors": [],
-            "files": []
-          },
-          {
-            "id": "human-rights",
-            "name": {
-              "ar": "حقوق الإنسان",
-              "en": "Human Rights",
-              "fr": "Droits de l'homme"
-            },
-            "instructors": [],
-            "files": []
-          },
-          {
-            "id": "jordan-history",
-            "name": {
-              "ar": "تاريخ الأردن وفلسطين",
-              "en": "History of Jordan and Palestine",
-              "fr": "Histoire de la Jordanie et de la Palestine"
-            },
-            "instructors": [],
-            "files": []
-          }
-        ]
+        "courses": []
       }
     ]
   }
