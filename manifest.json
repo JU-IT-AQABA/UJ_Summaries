@@ -1,6 +1,6 @@
 {
-  "name": "ملخصات الجامعة الأردنية",
-  "short_name": "ملخصات UJ",
+  "name": "UJ Summary",
+  "short_name": "UJ Summary",
   "description": "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية",
   "start_url": "./index.html",
   "display": "standalone",

@@ -1,57 +1,91 @@
-# ملخصات الجامعة الأردنية - UJ Summaries Platform
+# 🎓 UJ Summary - منصة ملخصات الجامعة الأردنية
 
-منصة ملخصات وتيست بانكات مواد الجامعة الأردنية | Static website hosted on GitHub Pages.
+![Version](https://img.shields.io/badge/version-2.0-blue.svg)
+![PWA](https://img.shields.io/badge/PWA-Supported-green.svg)
+![License](https://img.shields.io/badge/license-MIT-purple.svg)
 
-##  Live Site
-[رابط الموقع على GitHub Pages](https://ju-it-aqaba.github.io/UJ_Summaries/)
+منصة أكاديمية شاملة ومجانية تهدف لتيسير وتبسيط الرحلة الأكاديمية لطلاب الجامعة الأردنية، عبر توفير كافة الملخصات، أسئلة السنوات (Test Banks)، وأوراق العمل المقررة لجميع الكليات والتخصصات في مكان واحد.
+
+🌐 **رابط الموقع المباشر:** [https://ju-it-aqaba.github.io/Jordan-University-Summaries/](https://ju-it-aqaba.github.io/Jordan-University-Summaries/)
 
 ---
 
-##  هيكل الملفات / File Structure
+## 👨‍🎓 عن المبادرة والمؤسس
 
-```
+تم تأسيس منصة **UJ Summary** بواسطة:
+* **يوسف خالد عبد الهادي** - خريج الجامعة الأردنية (فرع العقبة)، الأول على الكلية بمعدل 3.97 / 4.00.
+
+**الهدف والدافع:** مساعدة زملائه الطلاب، خاصة من يعملون بجانب دراستهم، من خلال تجميع كافة المصادر التعليمية والملخصات الموثوقة وتنظيمها في منصة موحدة يستطيع الطالب الدراسة منها بكل طمأنينة ودون حيرة.
+
+---
+
+## 🌟 مميزات المنصة الرئيسية
+
+| الميزة | الوصف والتفاصيل |
+| :--- | :--- |
+| 📱 **PWA (تطبيق ويب قابل للتثبيت)** | يمكن تثبيت تطبيق **UJ Summary** مباشرة على هواتف الأندرويد والآيفون، مع دعم التصفح والعمل بدون إنترنت (Offline Support). |
+| 📥 **تنزيل مباشر ومتقدم للملفات** | تحسين روابط التنزيل لملفات PDF, ZIP, RAR, PPTX المرفوعة على Google Drive للتنزيل الفوري والمباشر على الهاتف والحاسوب دون طلب تسجيل دخول أو فتح تطبيقات خارجية. |
+| 🌐 **دعم متعدد اللغات** | دعم كامل لـ 3 لغات: **العربية (RTL)**، **الإنكليزية (LTR)**، و**الفرنسية (LTR)** مع تبديل فوري للواجهة والمسارات. |
+| 🌙 **الثيم الداكن والفاتح (Dark / Light Mode)** | دعم أنيق للثيمين الداكن والفاتح مع تذكر التفضيل تلقائياً في المتصفح (`localStorage`). |
+| ⚡ **تطبيق صفحة واحدة (SPA)** | تنقل فوري وسريع بين الكليات، التخصصات، المواد والملفات بدون إعادة تحميل الصفحة. |
+| 🔍 **نظام بحث ذكي فوري** | بحث سريع وشامل في أسماء المواد، الكليات، أسماء المدرسين/الدكاترة، ومُعِدّي الملخصات. |
+| 📤 **مشاركة الملخصات** | إمكانية إرسال ورفع ملفات ملخصات جديدة عبر نموذج Google Form المدمج لتحديث المنصة باستمرار. |
+| 🛠️ **لوحة إدارة محليّة (Admin Panel)** | تتيح لوحة `admin.html` إدارة الكليات والمواد والملفات وتصدير ملف `data.js` المحدث بسهولة. |
+
+---
+
+## 📁 هيكل المشروع (Project Structure)
+
+```text
 Summaries WebSite/
-│
-├── index.html           الصفحة الرئيسية (SPA)
-├── admin.html           لوحة الإدارة (للاستخدام الشخصي فقط)
-├── style.css            ملف CSS الرئيسي (Dark/Light + RTL/LTR)
-├── script.js            منطق الموقع الرئيسي (SPA Navigation, Search, Rendering)
-├── data.js              بيانات الكليات والتخصصات والمواد والملفات
-|__ translations.js      ترجمات الواجهة (AR / EN / FR)
+├── index.html           # واجهة المستعرض الرئيسية (SPA)
+├── admin.html           # لوحة الإدارة لإضافة المواد وتصدير البيانات
+├── script.js            # المنطق البرمجي الرئيسي، التصفح، البحث، وتنزيل الملفات
+├── data.js              # قاعدة بيانات المواد والكليات والملخصات (JSON/JS)
+├── translations.js      # ملف الترجمات الكامل للغات (AR, EN, FR)
+├── style.css            # التصميم والتنسيقات الرئيسية مع التجاوب والدعم الداكن
+├── manifest.json        # إعدادات تطبيق الويب PWA (UJ Summary)
+├── sw.js                # Service Worker للعمل التلقائي والتصفح بدون إنترنت
+└── assets/              # الأيقونات وملفات الميديا
+```
 
 ---
 
-##  كيفية إضافة محتوى جديد
+## 🛠️ كيفية إدارة المحتوى وإضافة مواد جديدة
 
-### الطريقة 1: استخدام لوحة الإدارة (الأسهل)
-1. افتح `admin.html` في المتصفح
-2. أضف بيانات المادة والملفات عبر النموذج
-3. انسخ ملفات PDF يدوياً إلى مجلد `assets/files/[كلية]/[تخصص]/`
-4. اضغط **"تصدير data.js"** لتنزيل الملف المحدَّث
-5. استبدل `data.js` القديم بالجديد
-6. `git add . && git commit -m "Add new content" && git push`
+### الطريقة الأولى: عبر لوحة الإدارة (`admin.html`) - الأسهل
+1. قم بفتح ملف `admin.html` في متصفحك.
+2. أضف الكلية، التخصص، المادة أو الملفات المطلوبة عبر الواجهة.
+3. اضغط على زر **"تصدير data.js"** لتنزيل ملف البيانات الجديد.
+4. استبدل ملف `data.js` القديم بالملف الجديد في مجلد المشروع.
+5. ارفع التحديثات عبر Git:
+   ```bash
+   git add .
+   git commit -m "إضافة مواد وملخصات جديدة"
+   git push
+   ```
 
-### الطريقة 2: التعديل المباشر في data.js
-افتح `data.js` وأضف مادة جديدة داخل التخصص المناسب:
+### الطريقة الثانية: التعديل المباشر على `data.js`
+يمكنك إضافة مادة أو ملف مباشرة داخل مصفوفة `courses` في `data.js`:
 
-```js
+```javascript
 {
-  id: "unique-course-id",
+  id: "course-unique-id",
   name: {
     ar: "اسم المادة بالعربي",
     en: "Course Name in English",
-    fr: "Nom du cours en Français",
+    fr: "Nom du cours"
   },
   instructors: [
-    { ar: "د. اسم المدرس", en: "Dr. Instructor Name", fr: "Dr. Instructor Name" }
+    { ar: "د. اسم المدرس", en: "Dr. Instructor Name", fr: "Dr. Nom" }
   ],
   files: [
     {
       id: "file-001",
       title: { ar: "ملخص الفصل الأول", en: "Chapter 1 Summary", fr: "Résumé Chapitre 1" },
-      type: "summary",  // "summary" أو "testbank"
-      preparedBy: { ar: "اسم المُعِد", en: "Preparer Name", fr: "Preparer Name" },
-      path: "assets/files/[college-id]/[spec-id]/filename.pdf"
+      type: "summary", // أو "testbank"
+      preparedBy: { ar: "اسم المُعِد", en: "Preparer Name", fr: "Nom" },
+      path: "https://drive.google.com/file/d/YOUR_FILE_ID/view"
     }
   ]
 }
@@ -59,40 +93,16 @@ Summaries WebSite/
 
 ---
 
-##  المميزات / Features
+## 🚀 النشر على GitHub Pages
 
-| الميزة | التفاصيل |
-|--------|----------|
-|  Dark / Light Mode | محفوظ في localStorage، بدون وميض عند التحميل |
-|  3 لغات | العربية (RTL)، English، Français (LTR) |
-|  Responsive | Mobile First، يعمل على جميع الأجهزة |
-|  بحث شامل | يبحث في المواد والمدرسين والمُعِدّين والكليات |
-|  SPA Navigation | تنقل سلس بدون إعادة تحميل الصفحة |
-|  Breadcrumb | مسار تنقل واضح في كل مستوى |
-|  Admin Panel | إضافة محتوى + تصدير data.js |
-
----
-
-##  ملاحظات مهمة
-
-- **لا يوجد Backend**: الموقع ثابت 100% ويعمل على GitHub Pages
-- **ملفات PDF**: يجب رفعها يدوياً إلى `assets/files/`
-- **admin.html**: للاستخدام الشخصي فقط - لا ترفعه كصفحة عامة
-- **localStorage keys**:
-  - `site_language`: اللغة المختارة (ar/en/fr)
-  - `site_theme`: الثيم المختار (dark/light)
-  - `pending_admin_data`: بيانات الأدمن المؤقتة
-  - `pending_admin_colleges`: كليات جديدة مضافة عبر الأدمن
-
----
-
-##  النشر على GitHub Pages
+الموقع يعمل بنسبة 100% كـ Static Site على **GitHub Pages**:
 
 ```bash
-git init
 git add .
-git commit -m "Initial commit: UJ Summaries Platform"
-git remote add origin https://ju-it-aqaba.github.io/UJ_Summaries/
-git push -u origin main
+git commit -m "Update UJ Summary site"
+git push origin main
 ```
-Made with love for University of Jordan students by Yousef Khaled Abdelhadi
+
+---
+
+💙 **تم التطوير بحب لخدمة طلاب الجامعة الأردنية بواسطة يوسف خالد عبد الهادي**
