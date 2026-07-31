@@ -743,25 +743,18 @@ function showCourseDetail(college, spec, course) {
    TRIGGER DOWNLOAD — Best cross-platform approach
    ============================================================ */
 function triggerDownload(url) {
-  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isAndroid = /Android/i.test(navigator.userAgent);
-
-  if (isAndroid) {
-    // Android Chrome: navigate directly to the download URL.
-    // Google Drive returns Content-Disposition: attachment, so Chrome
-    // downloads the file in the background and the user stays on the page.
-    window.location.href = url;
-  } else if (isIOS) {
-    // iOS Safari: the download attribute doesn't work for cross-origin URLs.
-    // Opening in a new tab is the best we can do — the user can then
-    // tap the Share button → "Save to Files" to save it.
-    window.open(url, '_blank', 'noopener,noreferrer');
-  } else {
-    // Desktop browsers: open in new tab, Content-Disposition header
-    // will trigger the native download dialog.
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
+  // For all platforms: open in a new tab / window.
+  // When Google Drive responds with Content-Disposition: attachment,
+  // the browser's native download manager handles the file.
+  //
+  // We use window.open() instead of window.location.href because:
+  // - window.location.href on docs.google.com triggers a Google account picker on Android.
+  // - window.open() opens a new tab; Google Drive (drive.google.com) returns the file
+  //   directly as an attachment for public files — no auth prompt.
+  //
+  // confirm=1 is already appended to the URL to bypass the virus-scan warning page
+  // that appears for files Google cannot scan (large files).
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 function renderFiles() {
@@ -811,10 +804,13 @@ function renderFiles() {
 
     // Parse Google Drive & Google Docs links to get the correct direct download/export URL
     if (file.path && file.path.includes('google.com')) {
-      // 1. Google Drive files (PDF, images, etc.)
+      // 1. Google Drive files (PDF, ZIP, images, etc.)
+      // Use drive.google.com (NOT docs.google.com) to avoid the Google account-picker
+      // prompt that appears when navigating to docs.google.com on Android.
+      // Public files shared with 'Anyone with the link' download without auth on drive.google.com.
       const driveFileMatch = file.path.match(/drive\.google\.com\/file\/d\/([^\/\?#]+)/);
       if (driveFileMatch && driveFileMatch[1]) {
-        downloadUrl = `https://docs.google.com/uc?export=download&id=${driveFileMatch[1]}`;
+        downloadUrl = `https://drive.google.com/uc?export=download&id=${driveFileMatch[1]}&confirm=1`;
       }
       // 2. Google Docs
       else if (file.path.includes('document/d/')) {
@@ -841,7 +837,7 @@ function renderFiles() {
       else if (file.path.includes('open?id=') || file.path.includes('uc?id=')) {
         const driveIdMatch = file.path.match(/(?:open|uc)\?.*id=([^\/\?#&]+)/);
         if (driveIdMatch && driveIdMatch[1]) {
-          downloadUrl = `https://docs.google.com/uc?export=download&id=${driveIdMatch[1]}`;
+          downloadUrl = `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}&confirm=1`;
         }
       }
     } else if (viewUrl && !viewUrl.startsWith('http')) {
