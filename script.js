@@ -789,7 +789,7 @@ function renderFiles() {
       // 1. Google Drive files (PDF, images, etc.)
       const driveFileMatch = file.path.match(/drive\.google\.com\/file\/d\/([^\/\?#]+)/);
       if (driveFileMatch && driveFileMatch[1]) {
-        downloadUrl = `https://drive.google.com/uc?export=download&id=${driveFileMatch[1]}`;
+        downloadUrl = `https://docs.google.com/uc?export=download&id=${driveFileMatch[1]}`;
       }
       // 2. Google Docs
       else if (file.path.includes('document/d/')) {
@@ -816,7 +816,7 @@ function renderFiles() {
       else if (file.path.includes('open?id=') || file.path.includes('uc?id=')) {
         const driveIdMatch = file.path.match(/(?:open|uc)\?.*id=([^\/\?#&]+)/);
         if (driveIdMatch && driveIdMatch[1]) {
-          downloadUrl = `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
+          downloadUrl = `https://docs.google.com/uc?export=download&id=${driveIdMatch[1]}`;
         }
       }
     } else if (viewUrl && !viewUrl.startsWith('http')) {
