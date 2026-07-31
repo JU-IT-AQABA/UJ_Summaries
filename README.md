@@ -6,7 +6,7 @@
 
 منصة أكاديمية شاملة ومجانية تهدف لتيسير وتبسيط الرحلة الأكاديمية لطلاب الجامعة الأردنية، عبر توفير كافة الملخصات، أسئلة السنوات (Test Banks)، وأوراق العمل المقررة لجميع الكليات والتخصصات في مكان واحد.
 
-🌐 **رابط الموقع المباشر:** [https://ju-it-aqaba.github.io/Jordan-University-Summaries/](https://ju-it-aqaba.github.io/Jordan-University-Summaries/)
+🌐 **رابط الموقع المباشر:** [https://ju-it-aqaba.github.io/UJ_Summaries/](https://ju-it-aqaba.github.io/UJ_Summaries/)
 
 ---
 

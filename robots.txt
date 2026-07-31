@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap URL
-Sitemap: https://ju-it-aqaba.github.io/Jordan-University-Summaries/sitemap.xml
+Sitemap: https://ju-it-aqaba.github.io/UJ_Summaries/sitemap.xml
