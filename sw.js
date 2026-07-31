@@ -43,6 +43,16 @@ self.addEventListener('fetch', (event) => {
   // Only cache GET requests
   if (event.request.method !== 'GET') return;
 
+  // Always serve data.js fresh from the network for admin.html to avoid cached stale data.js exports
+  const url = new URL(event.request.url);
+  const isDataJs = url.pathname.endsWith('data.js');
+  const isFromAdmin = event.request.referrer && event.request.referrer.includes('admin.html');
+
+  if (isDataJs && isFromAdmin) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       // Return cached response if found, but fetch a fresh version in the background to update the cache

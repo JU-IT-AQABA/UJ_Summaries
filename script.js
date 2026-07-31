@@ -784,12 +784,42 @@ function renderFiles() {
     let viewUrl = file.path;
     let downloadUrl = file.path;
 
-    // إذا كان رابط Google Drive، نستخرج הـ ID لعمل رابط تحميل مباشر
-    const driveMatch = file.path.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
-    if (driveMatch && driveMatch[1]) {
-      viewUrl = file.path;
-      downloadUrl = `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`;
-    } else if (!viewUrl.startsWith('http')) {
+    // Parse Google Drive & Google Docs links to get the correct direct download/export URL
+    if (file.path && file.path.includes('google.com')) {
+      // 1. Google Drive files (PDF, images, etc.)
+      const driveFileMatch = file.path.match(/drive\.google\.com\/file\/d\/([^\/\?#]+)/);
+      if (driveFileMatch && driveFileMatch[1]) {
+        downloadUrl = `https://drive.google.com/uc?export=download&id=${driveFileMatch[1]}`;
+      }
+      // 2. Google Docs
+      else if (file.path.includes('document/d/')) {
+        const docMatch = file.path.match(/document\/d\/([^\/\?#]+)/);
+        if (docMatch && docMatch[1]) {
+          downloadUrl = `https://docs.google.com/document/d/${docMatch[1]}/export?format=pdf`;
+        }
+      }
+      // 3. Google Slides
+      else if (file.path.includes('presentation/d/')) {
+        const slideMatch = file.path.match(/presentation\/d\/([^\/\?#]+)/);
+        if (slideMatch && slideMatch[1]) {
+          downloadUrl = `https://docs.google.com/presentation/d/${slideMatch[1]}/export/pdf`;
+        }
+      }
+      // 4. Google Sheets
+      else if (file.path.includes('spreadsheets/d/')) {
+        const sheetMatch = file.path.match(/spreadsheets\/d\/([^\/\?#]+)/);
+        if (sheetMatch && sheetMatch[1]) {
+          downloadUrl = `https://docs.google.com/spreadsheets/d/${sheetMatch[1]}/export?format=pdf`;
+        }
+      }
+      // 5. Google Drive Open or UC links
+      else if (file.path.includes('open?id=') || file.path.includes('uc?id=')) {
+        const driveIdMatch = file.path.match(/(?:open|uc)\?.*id=([^\/\?#&]+)/);
+        if (driveIdMatch && driveIdMatch[1]) {
+          downloadUrl = `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
+        }
+      }
+    } else if (viewUrl && !viewUrl.startsWith('http')) {
       // إذا كان مسار محلي، نقوم بتشفيره لتجنب مشاكل المسافات
       viewUrl = encodeURI(viewUrl);
       downloadUrl = encodeURI(downloadUrl);
