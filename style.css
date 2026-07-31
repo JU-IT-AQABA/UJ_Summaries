@@ -11,39 +11,44 @@
    2. CSS Variables (Theming)
    ============================================================ */
 :root {
-  /* Dark Mode Colors (Default) */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #111118;
-  --bg-card: #16161f;
-  --bg-card-hover: #1e1e2a;
-  --bg-input: #1a1a24;
-  --bg-overlay: rgba(0, 0, 0, 0.6);
+  /* Dark Mode Colors (Default) - Royal Metallic Gold & Midnight Navy */
+  --bg-primary: #090d16;
+  --bg-secondary: #0f1626;
+  --bg-card: #131d32;
+  --bg-card-hover: #1a2845;
+  --bg-input: #0e1524;
+  --bg-overlay: rgba(5, 8, 16, 0.75);
 
-  --text-primary: #f0f0f8;
-  --text-secondary: #a0a0bc;
-  --text-muted: #6b6b85;
-  --text-inverse: #0a0a0f;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #788ba8;
+  --text-inverse: #090d16;
 
-  --border-color: #2a2a3a;
-  --border-focus: #6366f1;
+  --border-color: rgba(212, 175, 55, 0.22);
+  --border-focus: #d4af37;
 
-  --accent-primary: #6366f1;
-  --accent-secondary: #818cf8;
-  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-  --accent-glow: rgba(99, 102, 241, 0.25);
+  --accent-primary: #d4af37;
+  --accent-secondary: #f3ce56;
+  --accent-tertiary: #b8860b;
+  --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f3ce56 45%, #b8860b 100%);
+  --accent-glow: rgba(212, 175, 55, 0.28);
+
+  --accent-navy: #162b50;
+  --accent-crimson: #8b1e22;
+  --accent-emerald: #1e5b32;
 
   --success: #22c55e;
   --warning: #f59e0b;
   --error: #ef4444;
-  --info: #06b6d4;
+  --info: #38bdf8;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.15);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 35px rgba(212, 175, 55, 0.22);
 
-  --glass-bg: rgba(22, 22, 31, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(15, 22, 38, 0.85);
+  --glass-border: rgba(212, 175, 55, 0.25);
 
   --nav-height: 70px;
   --border-radius: 12px;
@@ -52,32 +57,36 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Light Mode Override */
+/* Light Mode Override - Royal Parchment Gold & Warm Navy */
 [data-theme="light"] {
-  --bg-primary: #f8f8ff;
+  --bg-primary: #faf8f4;
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f0f0fa;
-  --bg-input: #f4f4ff;
-  --bg-overlay: rgba(0, 0, 0, 0.4);
+  --bg-card-hover: #f5f1e8;
+  --bg-input: #f2ede2;
+  --bg-overlay: rgba(9, 13, 22, 0.4);
 
-  --text-primary: #0f0f1a;
-  --text-secondary: #4b4b6a;
-  --text-muted: #8888a4;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
   --text-inverse: #ffffff;
 
-  --border-color: #dcdcec;
-  --border-focus: #6366f1;
+  --border-color: rgba(184, 134, 11, 0.22);
+  --border-focus: #b8860b;
 
-  --accent-glow: rgba(99, 102, 241, 0.15);
+  --accent-primary: #b8860b;
+  --accent-secondary: #d4af37;
+  --accent-tertiary: #8a6d1c;
+  --accent-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 55%, #1e3a8a 100%);
+  --accent-glow: rgba(184, 134, 11, 0.18);
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.14);
-  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.1);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 20px rgba(15, 23, 42, 0.09);
+  --shadow-lg: 0 8px 40px rgba(15, 23, 42, 0.13);
+  --shadow-glow: 0 0 30px rgba(184, 134, 11, 0.15);
 
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(184, 134, 11, 0.2);
 }
 
 /* ============================================================
@@ -171,40 +180,40 @@ ul, ol {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.07;
+  opacity: 0.14;
   animation: blobFloat 20s ease-in-out infinite;
 }
 
 .bg-blob-1 {
   width: 600px;
   height: 600px;
-  background: #6366f1;
+  background: #d4af37;
   top: -200px;
   left: -100px;
   animation-delay: 0s;
 }
 
 .bg-blob-2 {
-  width: 500px;
-  height: 500px;
-  background: #8b5cf6;
+  width: 550px;
+  height: 550px;
+  background: #1b3a6b;
   bottom: -100px;
   right: -100px;
   animation-delay: -7s;
 }
 
 .bg-blob-3 {
-  width: 400px;
-  height: 400px;
-  background: #06b6d4;
-  top: 50%;
-  left: 50%;
+  width: 450px;
+  height: 450px;
+  background: #7a1c1c;
+  top: 45%;
+  left: 45%;
   transform: translate(-50%, -50%);
   animation-delay: -14s;
 }
 
 [data-theme="light"] .bg-blob {
-  opacity: 0.04;
+  opacity: 0.07;
 }
 
 @keyframes blobFloat {
@@ -249,7 +258,7 @@ ul, ol {
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-weight: 800;
   font-size: 1.15rem;
   background: var(--accent-gradient);
@@ -260,9 +269,17 @@ ul, ol {
   flex-shrink: 0;
 }
 
-.navbar-logo .logo-icon {
-  font-size: 1.5rem;
-  -webkit-text-fill-color: initial;
+.navbar-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.45));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+
+.navbar-logo:hover .navbar-logo-img {
+  transform: scale(1.1) rotate(3deg);
+  filter: drop-shadow(0 0 16px rgba(243, 206, 86, 0.7));
 }
 
 /* Nav Links */
@@ -459,24 +476,66 @@ ul, ol {
    ============================================================ */
 .hero {
   position: relative;
-  padding: 100px 24px 80px;
+  padding: 60px 24px 80px;
   text-align: center;
   overflow: hidden;
+}
+
+.hero-emblem-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  animation: fadeInDown 0.6s ease both;
+}
+
+.hero-emblem-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 24px;
+  padding: 10px;
+  background: radial-gradient(circle, rgba(19, 29, 50, 0.85) 0%, rgba(9, 13, 22, 0.95) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 0 0 45px rgba(212, 175, 55, 0.3), inset 0 0 25px rgba(212, 175, 55, 0.18);
+  backdrop-filter: blur(12px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.hero-emblem-img:hover {
+  transform: scale(1.06) translateY(-6px);
+  border-color: rgba(243, 206, 86, 0.8);
+  box-shadow: 0 0 60px rgba(212, 175, 55, 0.55), inset 0 0 35px rgba(243, 206, 86, 0.3);
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
-  background: var(--accent-glow);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  gap: 10px;
+  padding: 8px 22px;
+  background: var(--glass-bg);
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
   border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--accent-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-primary);
   margin-bottom: 24px;
-  animation: fadeInDown 0.6s ease both;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeInDown 0.6s ease 0.05s both;
+  transition: var(--transition);
+}
+
+.hero-badge:hover {
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.hero-badge-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
 }
 
 .hero-title {
@@ -2538,17 +2597,23 @@ ul, ol {
 }
 
 .profile-avatar {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: rgba(99, 102, 241, 0.15);
+  background: var(--accent-glow);
+  border: 2px solid var(--accent-primary);
   color: var(--accent-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
   overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
 }
 
 .profile-avatar img {

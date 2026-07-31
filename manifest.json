@@ -4,8 +4,8 @@
   "description": "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
   "orientation": "portrait-primary",
   "icons": [
     {

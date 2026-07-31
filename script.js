@@ -748,17 +748,20 @@ function showCourseDetail(college, spec, course) {
    TRIGGER DOWNLOAD — Cross-platform approach
    ============================================================ */
 function triggerDownload(url) {
+  const isFolder = url.includes('/folders/') || url.includes('drive.google.com/drive/');
   const isAndroid = /Android/i.test(navigator.userAgent);
 
-  if (isAndroid) {
-    // Android: navigate in the SAME tab using window.location.href.
-    // drive.usercontent.google.com responds with Content-Disposition: attachment,
-    // so Chrome downloads the file in the background without leaving the page.
-    // This domain is NOT intercepted by the Google Drive Android app (unlike drive.google.com).
+  if (isFolder) {
+    // For Google Drive folders containing multiple files:
+    // Open in a new tab so Google Drive opens the folder view.
+    // User can click "Download All" (تحميل الكل) inside Google Drive
+    // which compresses all files into a single .zip file on both mobile & desktop.
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else if (isAndroid) {
+    // Single files on Android: direct download via window.location.href on drive.usercontent domain
     window.location.href = url;
   } else {
-    // Desktop / iOS: open in a new tab. The Content-Disposition: attachment header
-    // from drive.usercontent.google.com triggers the browser's native download.
+    // Desktop / iOS single files: open in new tab to trigger native download/viewing
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

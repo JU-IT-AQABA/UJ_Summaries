@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uj-summaries-v1';
+const CACHE_NAME = 'uj-summaries-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,8 @@ const ASSETS = [
   './translations.js',
   './data.js',
   './manifest.json',
+  './favicon.png',
+  './logo.png',
   './icon-192.png',
   './icon-512.png',
   './yousef.png'
