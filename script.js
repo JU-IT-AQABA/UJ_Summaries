@@ -774,10 +774,10 @@ function renderFiles() {
       <div class="no-files" style="grid-column: 1/-1; padding: 40px 20px;">
         <span class="no-files-icon"><i class="fa-solid fa-folder-open"></i></span>
         <p class="no-files-text">${t('no_files')}</p>
-        <p class="no-files-sub" style="color:var(--text-muted); margin-bottom: 16px;">${t('no_files_desc')}</p>
+        <p class="no-files-sub" style="color:var(--text-muted); margin-bottom: 16px;">${t('no_files_share')}</p>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhjTQKsELCBUafk8nWsnmGSEJj9NG82syZOju6MERHpzCdnQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:8px; margin: 0 auto; width: fit-content; padding: 10px 20px; font-weight: 700; border-radius: 10px;">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span>${t('nav_upload')}</span>
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>${t('share_summary')}</span>
         </a>
       </div>
     `;
