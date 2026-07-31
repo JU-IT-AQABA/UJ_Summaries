@@ -70,11 +70,12 @@
         <span id="nav-site-title" data-i18n="site_title">ملخصات الجامعة الأردنية</span>
       </a>
 
-      <!-- Nav Links (Desktop) -->
       <nav class="navbar-links" id="navbar-links" role="navigation" aria-label="التنقل الرئيسي">
         <a href="#" class="nav-link active" id="nav-home-link" data-view="home" data-i18n="nav_home">الرئيسية</a>
         <a href="#" class="nav-link" id="nav-colleges-link" data-view="colleges" data-i18n="nav_colleges">الكليات</a>
         <a href="#" class="nav-link" id="nav-search-link" data-view="search" data-i18n="nav_search">البحث</a>
+        <a href="#" class="nav-link" id="nav-about-link" data-view="about" data-i18n="nav_about">عن المبادرة</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhjTQKsELCBUafk8nWsnmGSEJj9NG82syZOju6MERHpzCdnQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="nav-link" id="nav-upload-link" data-i18n="nav_upload">شاركنا بملخصك</a>
       </nav>
 
       <!-- Controls -->
@@ -215,6 +216,25 @@
         </div>
       </section>
 
+      <!-- Contribution Banner Section -->
+      <section class="section-contribution" aria-labelledby="contribution-title" style="padding-top: 0;">
+        <div class="container">
+          <div class="contribution-card">
+            <div class="contribution-icon" aria-hidden="true">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div class="contribution-text">
+              <h3 class="contribution-title" id="contribution-title" data-i18n="contribution_title">شاركنا ملفاتك وملخصاتك!</h3>
+              <p class="contribution-desc" data-i18n="contribution_desc">هل لديك تلخيص، أسئلة سنوات، أو أوراق عمل؟ ساهم في مساعدة زملائك بالجامعة وارفعها لنا عبر نموذج جوجل.</p>
+            </div>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhjTQKsELCBUafk8nWsnmGSEJj9NG82syZOju6MERHpzCdnQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="btn btn-primary contribution-btn">
+              <span data-i18n="contribution_btn">ارفع ملف الآن</span>
+              <span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+          </div>
+        </div>
+      </section>
+
     </div><!-- /view-home -->
 
     <!-- ========== VIEW: COLLEGES ========== -->
@@ -319,11 +339,158 @@
           </div>
         </div>
 
-        <!-- Results Header -->
+          <!-- Results Header -->
         <div class="search-results-header" id="search-results-header"></div>
 
         <!-- Results List -->
         <div id="search-results-list" role="list" aria-label="نتائج البحث"></div>
+
+      </div>
+    </div>
+
+    <!-- ========== VIEW: ABOUT ========== -->
+    <div class="view" id="view-about">
+      <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        
+        <!-- About Hero -->
+        <section class="about-hero" style="text-align: center; margin-bottom: 50px;">
+          <div class="hero-badge" style="margin-bottom: 16px;">
+            <span><i class="fa-solid fa-circle-info"></i></span>
+            <span data-i18n="nav_about">عن المبادرة</span>
+          </div>
+          <h1 class="section-title" data-i18n="about_hero_title" style="margin-bottom: 12px;">مبادرة تدوين المصادر التعليمية</h1>
+          <p class="section-subtitle" data-i18n="about_hero_subtitle">بناء المعرفة الأكاديمية ونشرها لخدمة طلاب الجامعة الأردنية</p>
+        </section>
+
+        <!-- Statement Notice -->
+        <div class="about-statement-card" style="margin-bottom: 40px;">
+          <div class="about-card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+          <div class="about-card-text">
+            <h3 class="about-card-title" data-i18n="about_statement_title">بيان إطلاق مبادرة تدوين المصادر التعليمية</h3>
+            <p class="about-card-desc" data-i18n="about_statement_desc"></p>
+          </div>
+        </div>
+
+        <!-- Founder & Mission & Goal Grid -->
+        <div class="about-grid-top" style="margin-bottom: 50px;">
+          
+          <!-- Founder Card -->
+          <div class="about-info-card profile-card">
+            <div class="profile-header">
+              <div class="profile-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="profile-title-group">
+                <h3 class="about-card-title" data-i18n="about_founder_title">مؤسس المبادرة</h3>
+                <span class="profile-badge">GPA: 3.97/4.00</span>
+              </div>
+            </div>
+            <p class="profile-desc" data-i18n="about_founder_info"></p>
+          </div>
+
+          <!-- Mission & Goal Card -->
+          <div class="about-info-card mission-goal-card">
+            <div class="mg-section" style="margin-bottom: 24px;">
+              <h4 class="about-mg-title"><i class="fa-solid fa-paper-plane"></i> <span data-i18n="about_mission_title">الرسالة</span></h4>
+              <p class="about-card-desc" data-i18n="about_mission_desc"></p>
+            </div>
+            <div class="mg-section">
+              <h4 class="about-mg-title"><i class="fa-solid fa-bullseye"></i> <span data-i18n="about_goal_title">الهدف والدافع</span></h4>
+              <p class="about-card-desc" data-i18n="about_goal_desc"></p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Academic Foundations -->
+        <section class="about-section" style="margin-bottom: 50px;">
+          <div class="section-header" style="text-align: start; margin-bottom: 30px;">
+            <h2 class="section-title" data-i18n="about_academic_title">الأسس الأكاديمية للمبادرة</h2>
+            <p class="section-subtitle" data-i18n="about_academic_subtitle"></p>
+          </div>
+
+          <div class="about-academic-grid">
+            
+            <div class="academic-card">
+              <div class="academic-num">1</div>
+              <div class="academic-body">
+                <h4 class="academic-title" data-i18n="about_doc_title">التوثيق والمنهجية</h4>
+                <p class="academic-desc" data-i18n="about_doc_desc"></p>
+              </div>
+            </div>
+
+            <div class="academic-card">
+              <div class="academic-num">2</div>
+              <div class="academic-body">
+                <h4 class="academic-title" data-i18n="about_know_title">تنظيم وإدارة المعرفة</h4>
+                <p class="academic-desc" data-i18n="about_know_desc"></p>
+              </div>
+            </div>
+
+            <div class="academic-card">
+              <div class="academic-num">3</div>
+              <div class="academic-body">
+                <h4 class="academic-title" data-i18n="about_quality_title">الجودة والموثوقية</h4>
+                <p class="academic-desc" data-i18n="about_quality_desc"></p>
+              </div>
+            </div>
+
+            <div class="academic-card">
+              <div class="academic-num">4</div>
+              <div class="academic-body">
+                <h4 class="academic-title" data-i18n="about_tech_title">التنفيذ والنشـر التقني</h4>
+                <p class="academic-desc" data-i18n="about_tech_desc"></p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Volunteer Team / Partners of Success -->
+        <section class="about-section" style="margin-bottom: 50px;">
+          <div class="section-header" style="text-align: start; margin-bottom: 30px;">
+            <h2 class="section-title" data-i18n="about_partners_title">شركاء النجاح (فريق المتطوعين)</h2>
+            <p class="section-subtitle" data-i18n="about_partners_subtitle"></p>
+          </div>
+
+          <div class="volunteers-grid" id="volunteers-grid-container">
+            <!-- Rendered dynamically by script.js -->
+          </div>
+        </section>
+
+        <!-- Acknowledgements -->
+        <section class="about-section">
+          <div class="section-header" style="text-align: start; margin-bottom: 30px;">
+            <h2 class="section-title" data-i18n="about_thanks_title">رسائل شكر وتقدير</h2>
+            <p class="section-subtitle" data-i18n="about_thanks_subtitle"></p>
+          </div>
+
+          <div class="thanks-cards">
+            
+            <div class="thanks-card">
+              <div class="thanks-icon"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="thanks-body">
+                <p class="thanks-text" data-i18n="about_thanks_presidents"></p>
+              </div>
+            </div>
+
+            <div class="thanks-card">
+              <div class="thanks-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="thanks-body">
+                <h4 class="thanks-heading" data-i18n="about_thanks_special"></h4>
+                <p class="thanks-text" data-i18n="about_thanks_sarayrah" style="margin-bottom: 12px;"></p>
+                <p class="thanks-text" data-i18n="about_thanks_mother"></p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="about-footer-row" style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 24px; flex-wrap: wrap; gap: 16px;">
+            <div class="quality-badge-row">
+              <span class="file-type-badge badge-summary" style="padding: 6px 12px; font-size: 0.8rem;" data-i18n="about_quality_standards"></span>
+            </div>
+            <div class="about-signature" style="font-weight: 700; color: var(--accent-secondary); font-size: 0.95rem;" data-i18n="about_sign"></div>
+          </div>
+
+        </section>
 
       </div>
     </div>
@@ -354,6 +521,21 @@
       <span data-i18n="footer_rights">جميع الحقوق محفوظة</span>
     </div>
   </footer>
+
+  <!-- PWA Install & Update Banner -->
+  <div id="pwa-install-banner" class="pwa-banner" role="alert">
+    <div class="pwa-banner-content">
+      <span class="pwa-banner-icon" id="pwa-banner-icon-el"><i class="fa-solid fa-download"></i></span>
+      <div class="pwa-banner-text">
+        <strong data-i18n="pwa_install_title">تنزيل التطبيق</strong>
+        <span data-i18n="pwa_install_desc">ثبّت موقع الملخصات على هاتفك للوصول السريع وتصفح المواد بدون إنترنت!</span>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button id="pwa-install-btn" class="btn btn-primary btn-sm" data-i18n="pwa_install_btn">تنزيل</button>
+      <button id="pwa-close-btn" class="pwa-close-btn" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
 
   <!-- Toast Notifications Container -->
   <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>

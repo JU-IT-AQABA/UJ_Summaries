@@ -126,6 +126,7 @@ window.addEventListener('storage', (e) => {
   ) {
     refreshMergedData();
     rerenderCurrentView();
+    showToast(t('toast_new_data'), 'success');
   }
 });
 
@@ -285,6 +286,7 @@ function initNavigation() {
       if (view === 'home') showView('home');
       else if (view === 'colleges') showCollegesView();
       else if (view === 'search') showSearchView();
+      else if (view === 'about') showAboutView();
     });
   });
 
@@ -377,6 +379,8 @@ function rerenderCurrentView() {
     }
   } else if (view === 'search') {
     performSearch(AppState.searchQuery);
+  } else if (view === 'about') {
+    showAboutView();
   }
   translatePage();
 }
@@ -743,10 +747,14 @@ function renderFiles() {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div class="no-files" style="grid-column: 1/-1;">
+      <div class="no-files" style="grid-column: 1/-1; padding: 40px 20px;">
         <span class="no-files-icon"><i class="fa-solid fa-folder-open"></i></span>
         <p class="no-files-text">${t('no_files')}</p>
-        <p class="no-files-sub" style="color:var(--text-muted)">${t('search_no_results_desc')}</p>
+        <p class="no-files-sub" style="color:var(--text-muted); margin-bottom: 16px;">${t('no_files_desc')}</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhjTQKsELCBUafk8nWsnmGSEJj9NG82syZOju6MERHpzCdnQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:8px; margin: 0 auto; width: fit-content; padding: 10px 20px; font-weight: 700; border-radius: 10px;">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>${t('nav_upload')}</span>
+        </a>
       </div>
     `;
     return;
@@ -1081,11 +1089,247 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// Register Service Worker for PWA
+// Register Service Worker for PWA & Handle Updates
+let newWorker;
+let refreshing = false;
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-      .then((reg) => console.log('Service Worker registered successfully:', reg.scope))
+      .then((reg) => {
+        console.log('Service Worker registered successfully:', reg.scope);
+        
+        // Listen for new service worker installations
+        reg.addEventListener('updatefound', () => {
+          newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed') {
+              if (navigator.serviceWorker.controller) {
+                // New update available! Show update banner.
+                showUpdateBanner();
+              }
+            }
+          });
+        });
+      })
       .catch((err) => console.error('Service Worker registration failed:', err));
   });
+
+  // Reload page when new service worker takes over
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      window.location.reload();
+      refreshing = true;
+    }
+  });
+}
+
+// PWA Install Banner Logic
+let deferredPrompt;
+const installBanner = document.getElementById('pwa-install-banner');
+const installBtn = document.getElementById('pwa-install-btn');
+const closeBtn = document.getElementById('pwa-close-btn');
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent mini-infobar on mobile Chrome
+  e.preventDefault();
+  // Stash the event
+  deferredPrompt = e;
+  // Show custom install banner if not dismissed and not in standalone
+  if (installBanner && !isStandalone() && !localStorage.getItem('pwa_banner_dismissed')) {
+    translatePage();
+    installBanner.classList.add('show');
+  }
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User installed the PWA');
+        }
+        deferredPrompt = null;
+        if (installBanner) installBanner.classList.remove('show');
+      });
+    }
+  });
+}
+
+if (closeBtn && installBanner) {
+  closeBtn.addEventListener('click', () => {
+    installBanner.classList.remove('show');
+    localStorage.setItem('pwa_banner_dismissed', 'true');
+  });
+}
+
+// Show update prompt in banner
+function showUpdateBanner() {
+  if (!installBanner) return;
+  
+  const icon = document.getElementById('pwa-banner-icon-el');
+  const title = installBanner.querySelector('.pwa-banner-text strong');
+  const desc = installBanner.querySelector('.pwa-banner-text span');
+  const btn = document.getElementById('pwa-install-btn');
+  
+  if (icon) {
+    icon.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+  }
+  if (title) {
+    title.textContent = t('pwa_update_title');
+    title.setAttribute('data-i18n', 'pwa_update_title');
+  }
+  if (desc) {
+    desc.textContent = t('pwa_update_desc');
+    desc.setAttribute('data-i18n', 'pwa_update_desc');
+  }
+  if (btn) {
+    btn.textContent = t('pwa_update_btn');
+    btn.setAttribute('data-i18n', 'pwa_update_btn');
+    
+    btn.onclick = (e) => {
+      e.preventDefault();
+      if (newWorker) {
+        newWorker.postMessage({ action: 'skipWaiting' });
+      }
+    };
+  }
+  
+  installBanner.classList.add('show');
+}
+
+// Volunteer Team Data & Rendering
+const volunteersData = [
+  {
+    name: { ar: "باسل القديمات", en: "Basil Al-Qdeimat", fr: "Basil Al-Qdeimat" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بالمتابعة المستمرة ومراقبة الجودة", en: "Continuous monitoring and quality control", fr: "Suivi continu et contrôle de la qualité" }
+  },
+  {
+    name: { ar: "أسامة أبو صعيليك", en: "Osama Abu S'eileek", fr: "Osama Abu S'eileek" },
+    college: { ar: "كلية العلوم البحرية", en: "College of Marine Sciences", fr: "Faculté des Sciences Marines" },
+    role: { ar: "المساهمة بملخصات لكلية العلوم البحرية", en: "Contributed summaries for Marine Sciences", fr: "Résumés pour la Faculté des Sciences Marines" }
+  },
+  {
+    name: { ar: "سيدرا احمد", en: "Sidra Ahmed", fr: "Sidra Ahmed" },
+    college: { ar: "كلية العلوم البحرية", en: "College of Marine Sciences", fr: "Faculté des Sciences Marines" },
+    role: { ar: "المساهمة بملخصات لكلية العلوم البحرية", en: "Contributed summaries for Marine Sciences", fr: "Résumés pour la Faculté des Sciences Marines" }
+  },
+  {
+    name: { ar: "وفاء الحلو", en: "Wafaa Al-Helou", fr: "Wafaa Al-Helou" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "اسراء الحلو", en: "Israa Al-Helou", fr: "Israa Al-Helou" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "دانا أسامة", en: "Dana Osama", fr: "Dana Osama" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "أسامة المساعيد", en: "Osama Al-Masaeed", fr: "Osama Al-Masaeed" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "شهد الخوالدة", en: "Shahd Al-Khawaldeh", fr: "Shahd Al-Khawaldeh" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "بثينة المرقطن", en: "Buthaina Al-Muraqten", fr: "Buthaina Al-Muraqten" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "عبدالرحمن النسور", en: "Abdulrahman Al-Nsoor", fr: "Abdulrahman Al-Nsoor" },
+    college: { ar: "كلية نظم وتكنولوجيا المعلومات", en: "College of IT", fr: "Faculté des TI" },
+    role: { ar: "المساهمة بملخصات لكلية نظم وتكنولوجيا المعلومات", en: "Contributed summaries for College of IT", fr: "Résumés pour la Faculté des TI" }
+  },
+  {
+    name: { ar: "سارة مدين", en: "Sara Madeen", fr: "Sara Madeen" },
+    college: { ar: "كلية القانون", en: "College of Law", fr: "Faculté de Droit" },
+    role: { ar: "المساهمة بملخصات لكلية القانون", en: "Contributed summaries for College of Law", fr: "Résumés pour la Faculté de Droit" }
+  },
+  {
+    name: { ar: "وسام منصور", en: "Wisam Mansour", fr: "Wisam Mansour" },
+    college: { ar: "كلية القانون", en: "College of Law", fr: "Faculté de Droit" },
+    role: { ar: "المساهمة بملخصات لكلية القانون", en: "Contributed summaries for College of Law", fr: "Résumés pour la Faculté de Droit" }
+  },
+  {
+    name: { ar: "فاطمة القطش", en: "Fatima Al-Qatash", fr: "Fatima Al-Qatash" },
+    college: { ar: "كلية القانون", en: "College of Law", fr: "Faculté de Droit" },
+    role: { ar: "المساهمة بملخصات لكلية القانون", en: "Contributed summaries for College of Law", fr: "Résumés pour la Faculté de Droit" }
+  },
+  {
+    name: { ar: "بهاء الدين", en: "Bahaa El-Din", fr: "Bahaa El-Din" },
+    college: { ar: "كلية الأعمال", en: "College of Business", fr: "Faculté des Affaires" },
+    role: { ar: "المساهمة بملخصات لكلية الأعمال", en: "Contributed summaries for College of Business", fr: "Résumés pour la Faculté des Affaires" }
+  },
+  {
+    name: { ar: "زميل خريج", en: "Graduate Colleague", fr: "Collègue Diplômé" },
+    college: { ar: "كلية الأعمال", en: "College of Business", fr: "Faculté des Affaires" },
+    role: { ar: "المساهمة بملخصات لكلية الأعمال", en: "Contributed summaries for College of Business", fr: "Résumés pour la Faculté des Affaires" }
+  },
+  {
+    name: { ar: "لجين جاد الله", en: "Lujain Jadallah", fr: "Lujain Jadallah" },
+    college: { ar: "كلية السياحة والفندقة", en: "College of Tourism & Hotel Management", fr: "Faculté de Tourisme et Hôtellerie" },
+    role: { ar: "المساهمة بملخصات لكلية السياحة والفندقة", en: "Contributed summaries for Tourism & Hotel Management", fr: "Résumés pour la Faculté de Tourisme et Hôtellerie" }
+  },
+  {
+    name: { ar: "مالك المهر", en: "Malek Al-Mohr", fr: "Malek Al-Mohr" },
+    college: { ar: "كلية السياحة والفندقة", en: "College of Tourism & Hotel Management", fr: "Faculté de Tourisme et Hôtellerie" },
+    role: { ar: "المساهمة بملخصات لكلية السياحة والفندقة", en: "Contributed summaries for Tourism & Hotel Management", fr: "Résumés pour la Faculté de Tourisme et Hôtellerie" }
+  },
+  {
+    name: { ar: "فرح النويرات", en: "Farah Al-Nweirat", fr: "Farah Al-Nweirat" },
+    college: { ar: "كلية اللغات", en: "College of Languages", fr: "Faculté des Langues" },
+    role: { ar: "المساهمة بملخصات لكلية اللغات", en: "Contributed summaries for College of Languages", fr: "Résumés pour la Faculté des Langues" }
+  },
+  {
+    name: { ar: "عبادة شديفات (اتحاد الطلبة)", en: "Obada Shdaifat (Student Union)", fr: "Obada Shdaifat (Union des Étudiants)" },
+    college: { ar: "اتحاد الطلبة", en: "Student Union", fr: "Union des Étudiants" },
+    role: { ar: "المساهمة بنشر وتوصيل طلاب الكليات لينشروا ملخصاتهم ويفيدوا الجميع", en: "Helped share resources and connect college students to publish summaries", fr: "A aidé à partager les ressources et connecter les étudiants" }
+  },
+  {
+    name: { ar: "انس المعاني (اتحاد الطلبة)", en: "Anas Al-Maani (Student Union)", fr: "Anas Al-Maani (Union des Étudiants)" },
+    college: { ar: "اتحاد الطلبة", en: "Student Union", fr: "Union des Étudiants" },
+    role: { ar: "المساهمة بنشر وتوصيل طلاب الكليات لينشروا ملخصاتهم ويفيدوا الجميع", en: "Helped share resources and connect college students to publish summaries", fr: "A aidé à partager les ressources et connecter les étudiants" }
+  }
+];
+
+function renderVolunteersGrid() {
+  const container = document.getElementById('volunteers-grid-container');
+  if (!container) return;
+  container.innerHTML = '';
+  
+  volunteersData.forEach((vol) => {
+    const card = document.createElement('div');
+    card.className = 'volunteer-card';
+    
+    const nameText = vol.name[AppState.currentLang] || vol.name.ar;
+    const collegeText = vol.college[AppState.currentLang] || vol.college.ar;
+    const roleText = vol.role[AppState.currentLang] || vol.role.ar;
+    
+    card.innerHTML = `
+      <div class="volunteer-name">${escapeHtml(nameText)}</div>
+      <div class="volunteer-college">${escapeHtml(collegeText)}</div>
+      <div class="volunteer-role">${escapeHtml(roleText)}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function showAboutView() {
+  showView('about');
+  renderVolunteersGrid();
 }
