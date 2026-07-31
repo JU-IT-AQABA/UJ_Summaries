@@ -51,6 +51,7 @@ const translations = {
 
     // File Cards
     file_download: "تحميل",
+    webview_warning: "تنبيه: لتتمكن من تحميل الملفات بنجاح على الهاتف، يرجى فتح الموقع في متصفح الهاتف الخارجي (Safari أو Chrome) عن طريق خيارات التطبيق بالأعلى.",
     file_view: "عرض",
     file_summary: "ملخص",
     file_testbank: "تيست بانك",
@@ -241,6 +242,7 @@ const translations = {
 
     // File Cards
     file_download: "Download",
+    webview_warning: "Notice: To download files successfully on your phone, please open this site in your external browser (Safari or Chrome) using the options menu at the top.",
     file_view: "View",
     file_summary: "Summary",
     file_testbank: "Test Bank",
@@ -431,6 +433,7 @@ const translations = {
 
     // File Cards
     file_download: "Télécharger",
+    webview_warning: "Remarque: Pour télécharger des fichiers sur votre téléphone, veuillez ouvrir ce site dans votre navigateur externe (Safari ou Chrome) via le menu d'options en haut.",
     file_view: "Afficher",
     file_summary: "Résumé",
     file_testbank: "Banque de tests",
