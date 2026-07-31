@@ -740,18 +740,28 @@ function showCourseDetail(college, spec, course) {
 }
 
 /* ============================================================
-   TRIGGER DOWNLOAD — Works on Desktop, Android & iOS
+   TRIGGER DOWNLOAD — Best cross-platform approach
    ============================================================ */
 function triggerDownload(url) {
-  // Create a hidden anchor, force-click it.
-  // For cross-origin URLs (Google Drive), the 'download' attribute is
-  // ignored by browsers, but navigating to the URL still triggers a
-  // download when Google returns Content-Disposition: attachment.
-  // Using window.open() is the most reliable approach on mobile:
-  // - Android Chrome / system browser: opens the download manager
-  // - iOS Safari: opens file in a new tab, user can save via Share button
-  // - In-app browsers (WhatsApp, Instagram, etc.): hands off to system browser
-  window.open(url, '_blank', 'noopener,noreferrer');
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  if (isAndroid) {
+    // Android Chrome: navigate directly to the download URL.
+    // Google Drive returns Content-Disposition: attachment, so Chrome
+    // downloads the file in the background and the user stays on the page.
+    window.location.href = url;
+  } else if (isIOS) {
+    // iOS Safari: the download attribute doesn't work for cross-origin URLs.
+    // Opening in a new tab is the best we can do — the user can then
+    // tap the Share button → "Save to Files" to save it.
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    // Desktop browsers: open in new tab, Content-Disposition header
+    // will trigger the native download dialog.
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 }
 
 function renderFiles() {
