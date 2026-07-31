@@ -144,46 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setFooterYear();
   initNavbarScroll();
   initMobileMenu();
-  initWebviewWarning();
 });
-
-/* ============================================================
-   IN-APP BROWSER WARNING
-   ============================================================ */
-function initWebviewWarning() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isWebview = (
-    (ua.includes('FBAN') || ua.includes('FBAV')) || // Facebook
-    ua.includes('Instagram') || // Instagram
-    ua.includes('WhatsApp') || // WhatsApp
-    ua.includes('Messenger') || // FB Messenger
-    ua.includes('LinkedInApp') || // LinkedIn
-    ua.includes('GSA') || // Google App on iOS
-    ((ua.includes('iPhone') || ua.includes('iPad')) && !ua.includes('Safari') && ua.includes('Mobile'))
-  );
-
-  // Check if warning has been dismissed in this session
-  const isDismissed = sessionStorage.getItem('webview_warning_dismissed');
-
-  if (isWebview && !isDismissed) {
-    const warningCard = document.getElementById('webview-warning');
-    const closeBtn = document.getElementById('webview-warning-close');
-    
-    if (warningCard) {
-      // Show card with a slide-up animation after a short delay
-      setTimeout(() => {
-        warningCard.classList.add('show');
-      }, 1000);
-    }
-    
-    if (closeBtn && warningCard) {
-      closeBtn.addEventListener('click', () => {
-        warningCard.classList.remove('show');
-        sessionStorage.setItem('webview_warning_dismissed', 'true');
-      });
-    }
-  }
-}
 
 /* ============================================================
    4. THEME MANAGEMENT
@@ -778,6 +739,21 @@ function showCourseDetail(college, spec, course) {
   renderFiles();
 }
 
+/* ============================================================
+   TRIGGER DOWNLOAD — Works on Desktop, Android & iOS
+   ============================================================ */
+function triggerDownload(url) {
+  // Create a hidden anchor, force-click it.
+  // For cross-origin URLs (Google Drive), the 'download' attribute is
+  // ignored by browsers, but navigating to the URL still triggers a
+  // download when Google returns Content-Disposition: attachment.
+  // Using window.open() is the most reliable approach on mobile:
+  // - Android Chrome / system browser: opens the download manager
+  // - iOS Safari: opens file in a new tab, user can save via Share button
+  // - In-app browsers (WhatsApp, Instagram, etc.): hands off to system browser
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 function renderFiles() {
   const course = AppState.selectedCourse;
   if (!course) return;
@@ -864,9 +840,6 @@ function renderFiles() {
       downloadUrl = encodeURI(downloadUrl);
     }
 
-    const isDirectDownload = (downloadUrl !== file.path);
-    const downloadTarget = isDirectDownload ? 'target="_self"' : 'target="_blank"';
-
     card.innerHTML = `
       <div class="file-card-header">
         <div class="file-type-icon ${typeClass}" aria-hidden="true">${typeIcon}</div>
@@ -881,11 +854,20 @@ function renderFiles() {
           <span><i class="fa-solid fa-eye"></i></span>
           <span>${t('file_view')}</span>
         </a>
-        <a class="btn-download" href="${downloadUrl}" download ${downloadTarget} rel="noopener noreferrer" aria-label="${t('file_download')}: ${getName(file.title)}" title="${t('file_download')}">
+        <button class="btn-download" data-dl-url="${downloadUrl}" aria-label="${t('file_download')}: ${getName(file.title)}" title="${t('file_download')}">
           <i class="fa-solid fa-download"></i>
-        </a>
+        </button>
       </div>
     `;
+
+    // Attach download handler to the button
+    const dlBtn = card.querySelector('.btn-download');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', () => {
+        triggerDownload(downloadUrl);
+      });
+    }
+
     container.appendChild(card);
   });
 }
