@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uj-summaries-v2';
+const CACHE_NAME = 'uj-summaries-v3';
 const ASSETS = [
   './',
   './index.html',
