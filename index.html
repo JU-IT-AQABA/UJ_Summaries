@@ -114,6 +114,7 @@
         <a href="#" class="nav-link active" id="nav-home-link" data-view="home" data-i18n="nav_home">الرئيسية</a>
         <a href="#" class="nav-link" id="nav-colleges-link" data-view="colleges" data-i18n="nav_colleges">الكليات</a>
         <a href="#" class="nav-link" id="nav-search-link" data-view="search" data-i18n="nav_search">البحث</a>
+        <a href="#" class="nav-link" id="nav-favorites-link" data-view="favorites" data-i18n="nav_favorites">المفضلة</a>
         <a href="#" class="nav-link" id="nav-about-link" data-view="about" data-i18n="nav_about">عن المبادرة</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfhjTQKsELCBUafk8nWsnmGSEJj9NG82syZOju6MERHpzCdnQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="nav-link" id="nav-upload-link" data-i18n="nav_upload">شاركنا بملخصك</a>
       </nav>
@@ -388,6 +389,19 @@
         <!-- Results List -->
         <div id="search-results-list" role="list" aria-label="نتائج البحث"></div>
 
+      </div>
+    </div>
+
+    <!-- ========== VIEW: FAVORITES ========== -->
+    <div class="view" id="view-favorites">
+      <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div id="favorites-breadcrumb" class="breadcrumb" aria-label="مسار التنقل" role="navigation"></div>
+        <div class="section-header" style="text-align: start;">
+          <h2 class="section-title" id="favorites-page-title" data-i18n="favorites_title">المواد المفضلة</h2>
+          <p class="section-subtitle" id="favorites-page-subtitle" data-i18n="favorites_subtitle">المواد التي قمت بحفظها للوصول السريع</p>
+        </div>
+
+        <div class="courses-grid" id="favorites-grid" role="list" aria-label="قائمة المواد المفضلة"></div>
       </div>
     </div>
 

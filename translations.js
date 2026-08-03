@@ -18,6 +18,7 @@ const translations = {
     nav_home: "الرئيسية",
     nav_colleges: "الكليات",
     nav_search: "البحث",
+    nav_favorites: "المفضلة",
     nav_admin: "مجموعة التيليغرام للملخصات",
 
     // Hero Section
@@ -59,6 +60,17 @@ const translations = {
     // Breadcrumb
     breadcrumb_home: "الرئيسية",
     breadcrumb_colleges: "الكليات",
+
+    // Favorites Section
+    favorites_title: "المواد المفضلة",
+    favorites_subtitle: "المواد التي قمت بحفظها للوصول السريع",
+    favorites_empty: "لا توجد مواد مضافة للمفضلة بعد",
+    favorites_empty_desc: "يمكنك إضافة أي مادة للمفضلة بالضغط على أيقونة القلب في بطاقة المادة",
+    browse_colleges: "تصفح الكليات",
+    add_to_favorites: "إضافة للمفضلة",
+    remove_from_favorites: "إزالة من المفضلة",
+    toast_added_fav: "تمت إضافة المادة للمفضلة",
+    toast_removed_fav: "تمت إزالة المادة من المفضلة",
 
     // Search Results
     search_results: "نتائج البحث",
@@ -210,6 +222,7 @@ const translations = {
     nav_home: "Home",
     nav_colleges: "Colleges",
     nav_search: "Search",
+    nav_favorites: "Favorites",
     nav_admin: "Telegram summaries group",
 
     // Hero Section
@@ -251,6 +264,17 @@ const translations = {
     // Breadcrumb
     breadcrumb_home: "Home",
     breadcrumb_colleges: "Colleges",
+
+    // Favorites Section
+    favorites_title: "Favorite Courses",
+    favorites_subtitle: "Courses you have saved for quick access",
+    favorites_empty: "No favorite courses added yet",
+    favorites_empty_desc: "You can add any course to favorites by clicking the heart icon on the course card",
+    browse_colleges: "Browse Colleges",
+    add_to_favorites: "Add to Favorites",
+    remove_from_favorites: "Remove from Favorites",
+    toast_added_fav: "Course added to favorites",
+    toast_removed_fav: "Course removed from favorites",
 
     // Search Results
     search_results: "Search Results",
@@ -402,6 +426,7 @@ const translations = {
     nav_home: "Accueil",
     nav_colleges: "Facultés",
     nav_search: "Recherche",
+    nav_favorites: "Favoris",
     nav_admin: "Groupe Telegram des résumés",
 
     // Hero Section
@@ -443,6 +468,17 @@ const translations = {
     // Breadcrumb
     breadcrumb_home: "Accueil",
     breadcrumb_colleges: "Facultés",
+
+    // Favorites Section
+    favorites_title: "Matières favorites",
+    favorites_subtitle: "Matières enregistrées pour un accès rapide",
+    favorites_empty: "Aucune matière favorite ajoutée",
+    favorites_empty_desc: "Vous pouvez ajouter n'importe quel cours aux favoris en cliquant sur l'icône de cœur",
+    browse_colleges: "Parcourir les facultés",
+    add_to_favorites: "Ajouter aux favoris",
+    remove_from_favorites: "Retirer des favoris",
+    toast_added_fav: "Matière ajoutée aux favoris",
+    toast_removed_fav: "Matière retirée des favoris",
 
     // Search Results
     search_results: "Résultats de recherche",

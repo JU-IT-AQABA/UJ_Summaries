@@ -281,6 +281,214 @@ function getName(obj, lang) {
 }
 
 /* ============================================================
+   5.5 FAVORITES MANAGEMENT
+   ============================================================ */
+function getFavorites() {
+  try {
+    return JSON.parse(localStorage.getItem('site_favorites') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveFavorites(favorites) {
+  localStorage.setItem('site_favorites', JSON.stringify(favorites));
+}
+
+function getCourseFavKey(collegeId, specId, courseId) {
+  return `${collegeId}::${specId}::${courseId}`;
+}
+
+function isFavorite(collegeId, specId, courseId) {
+  const key = getCourseFavKey(collegeId, specId, courseId);
+  const favs = getFavorites();
+  return favs.some((item) => (typeof item === 'string' ? item === key : item.key === key));
+}
+
+function toggleFavorite(collegeId, specId, courseId, courseName) {
+  const key = getCourseFavKey(collegeId, specId, courseId);
+  let favs = getFavorites();
+  const index = favs.findIndex((item) => (typeof item === 'string' ? item === key : item.key === key));
+
+  let added = false;
+  if (index > -1) {
+    favs.splice(index, 1);
+    showToast(t('toast_removed_fav'), 'info');
+  } else {
+    favs.push({
+      key: key,
+      collegeId: collegeId,
+      specId: specId,
+      courseId: courseId,
+      addedAt: Date.now()
+    });
+    added = true;
+    showToast(t('toast_added_fav'), 'success');
+  }
+  saveFavorites(favs);
+  return added;
+}
+
+function createFavButton(collegeId, specId, courseId, courseName, extraClass = '') {
+  const isFav = isFavorite(collegeId, specId, courseId);
+  const btn = document.createElement('button');
+  btn.className = `fav-btn ${isFav ? 'active' : ''} ${extraClass}`.trim();
+  btn.setAttribute('type', 'button');
+  btn.setAttribute('aria-label', isFav ? t('remove_from_favorites') : t('add_to_favorites'));
+  btn.setAttribute('title', isFav ? t('remove_from_favorites') : t('add_to_favorites'));
+  btn.innerHTML = `<i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>`;
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const nowFav = toggleFavorite(collegeId, specId, courseId, courseName);
+    btn.classList.toggle('active', nowFav);
+    btn.setAttribute('aria-label', nowFav ? t('remove_from_favorites') : t('add_to_favorites'));
+    btn.setAttribute('title', nowFav ? t('remove_from_favorites') : t('add_to_favorites'));
+    btn.innerHTML = `<i class="${nowFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>`;
+
+    if (AppState.currentView === 'favorites') {
+      renderFavorites();
+    } else if (AppState.currentView === 'courses') {
+      renderCourses();
+    }
+  });
+
+  return btn;
+}
+
+function showFavoritesView() {
+  showView('favorites');
+
+  const breadcrumbItems = [
+    { label: t('breadcrumb_home'), viewFn: () => showView('home') },
+    { label: t('nav_favorites'), active: true }
+  ];
+  setBreadcrumb('favorites-breadcrumb', breadcrumbItems);
+
+  renderFavorites();
+}
+
+function renderFavorites() {
+  const container = document.getElementById('favorites-grid');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const favs = getFavorites();
+
+  if (!favs || favs.length === 0) {
+    container.innerHTML = `
+      <div class="no-files" style="grid-column: 1/-1; padding: 50px 20px;">
+        <span class="no-files-icon" style="color: rgba(239, 68, 68, 0.5);"><i class="fa-regular fa-heart"></i></span>
+        <p class="no-files-text">${t('favorites_empty')}</p>
+        <p class="no-files-sub" style="color:var(--text-muted); margin-bottom: 20px;">${t('favorites_empty_desc')}</p>
+        <button class="btn btn-primary" id="fav-empty-browse-btn" style="display:inline-flex; align-items:center; gap:8px; margin: 0 auto; width: fit-content; padding: 10px 24px; font-weight: 700; border-radius: 10px;">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>${t('browse_colleges')}</span>
+        </button>
+      </div>
+    `;
+    document.getElementById('fav-empty-browse-btn')?.addEventListener('click', () => showCollegesView());
+    return;
+  }
+
+  const favCoursesList = [];
+  favs.forEach((item) => {
+    let collegeId, specId, courseId;
+    if (typeof item === 'string') {
+      const parts = item.split('::');
+      collegeId = parts[0];
+      specId = parts[1];
+      courseId = parts[2];
+    } else {
+      collegeId = item.collegeId;
+      specId = item.specId;
+      courseId = item.courseId;
+    }
+
+    let college, spec, course;
+    if (window.mergedCollegesData) {
+      college = window.mergedCollegesData.find((c) => c.id === collegeId);
+      if (college) {
+        spec = college.specializations.find((s) => s.id === specId);
+        if (spec) {
+          course = spec.courses.find((co) => co.id === courseId || getName(co.name) === getName(item.courseName));
+        }
+      }
+    }
+
+    if (college && spec && course) {
+      favCoursesList.push({ college, spec, course });
+    }
+  });
+
+  if (favCoursesList.length === 0) {
+    container.innerHTML = `
+      <div class="no-files" style="grid-column: 1/-1; padding: 50px 20px;">
+        <span class="no-files-icon" style="color: rgba(239, 68, 68, 0.5);"><i class="fa-regular fa-heart"></i></span>
+        <p class="no-files-text">${t('favorites_empty')}</p>
+        <p class="no-files-sub" style="color:var(--text-muted); margin-bottom: 20px;">${t('favorites_empty_desc')}</p>
+        <button class="btn btn-primary" id="fav-empty-browse-btn" style="display:inline-flex; align-items:center; gap:8px; margin: 0 auto; width: fit-content; padding: 10px 24px; font-weight: 700; border-radius: 10px;">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>${t('browse_colleges')}</span>
+        </button>
+      </div>
+    `;
+    document.getElementById('fav-empty-browse-btn')?.addEventListener('click', () => showCollegesView());
+    return;
+  }
+
+  favCoursesList.forEach(({ college, spec, course }) => {
+    const summaryCount = course.files ? course.files.filter((f) => f.type === 'summary').length : 0;
+    const testbankCount = course.files ? course.files.filter((f) => f.type === 'testbank').length : 0;
+
+    const card = document.createElement('div');
+    card.className = 'course-card';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', getName(course.name));
+
+    const instructorText = course.instructors && course.instructors.length
+      ? course.instructors.map((i) => getName(i)).join('، ')
+      : '—';
+
+    const badges = [];
+    if (summaryCount > 0) badges.push(`<span class="file-type-badge badge-summary"><i class="fa-solid fa-file-lines"></i> ${summaryCount} ${t('tab_summaries')}</span>`);
+    if (testbankCount > 0) badges.push(`<span class="file-type-badge badge-testbank"><i class="fa-solid fa-clipboard-question"></i> ${testbankCount} ${t('tab_testbank')}</span>`);
+    if (badges.length === 0) badges.push(`<span class="file-type-badge" style="background:var(--bg-input); color:var(--text-muted)"><i class="fa-solid fa-folder-open"></i> ${t('no_files')}</span>`);
+
+    card.innerHTML = `
+      <div class="course-origin-badge">
+        <i class="fa-solid fa-building-columns"></i>
+        <span>${getName(college.name)} › ${getName(spec.name)}</span>
+      </div>
+      <div class="course-card-top">
+        <h3 class="course-name">${getName(course.name)}</h3>
+      </div>
+      <div class="course-instructors">
+        <span><i class="fa-solid fa-user-tie"></i></span>
+        <span>${instructorText}</span>
+      </div>
+      <div class="course-files-count">${badges.join('')}</div>
+    `;
+
+    const favBtn = createFavButton(college.id, spec.id, course.id, getName(course.name));
+    card.querySelector('.course-card-top').appendChild(favBtn);
+
+    card.addEventListener('click', () => showCourseDetail(college, spec, course));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showCourseDetail(college, spec, course);
+      }
+    });
+
+    container.appendChild(card);
+  });
+}
+
+
+/* ============================================================
    6. SPA NAVIGATION
    ============================================================ */
 function initNavigation() {
@@ -291,6 +499,7 @@ function initNavigation() {
       if (view === 'home') showView('home');
       else if (view === 'colleges') showCollegesView();
       else if (view === 'search') showSearchView();
+      else if (view === 'favorites') showFavoritesView();
       else if (view === 'about') showAboutView();
     });
   });
@@ -630,13 +839,20 @@ function renderCourses() {
     if (badges.length === 0) badges.push(`<span class="file-type-badge" style="background:var(--bg-input); color:var(--text-muted)"><i class="fa-solid fa-folder-open"></i> ${t('no_files')}</span>`);
 
     card.innerHTML = `
-      <h3 class="course-name">${getName(course.name)}</h3>
+      <div class="course-card-top">
+        <h3 class="course-name">${getName(course.name)}</h3>
+      </div>
       <div class="course-instructors">
         <span><i class="fa-solid fa-user-tie"></i></span>
         <span>${instructorText}</span>
       </div>
       <div class="course-files-count">${badges.join('')}</div>
     `;
+
+    const collegeId = freshCollege ? freshCollege.id : (AppState.selectedCollege ? AppState.selectedCollege.id : '');
+    const specId = freshSpec ? freshSpec.id : (AppState.selectedSpec ? AppState.selectedSpec.id : '');
+    const favBtn = createFavButton(collegeId, specId, course.id, getName(course.name));
+    card.querySelector('.course-card-top').appendChild(favBtn);
 
     // pass freshCollege/freshSpec so navigation stays correct
     card.addEventListener('click', () =>
@@ -707,8 +923,20 @@ function showCourseDetail(college, spec, course) {
   breadcrumbItems.push({ label: getName(course.name), active: true });
   setBreadcrumb('course-breadcrumb', breadcrumbItems);
 
-  const titleEl = document.getElementById('course-detail-title');
-  if (titleEl) titleEl.textContent = getName(course.name);
+  const headerContainer = document.getElementById('course-detail-header');
+  if (headerContainer) {
+    headerContainer.innerHTML = `
+      <div class="course-header-top-row">
+        <h1 class="course-header-title" id="course-detail-title">${getName(course.name)}</h1>
+        <div id="course-detail-fav-container"></div>
+      </div>
+      <div class="course-meta-row" id="course-meta-row"></div>
+    `;
+    const favContainer = document.getElementById('course-detail-fav-container');
+    if (favContainer) {
+      favContainer.appendChild(createFavButton(college.id, spec.id, course.id, getName(course.name), 'fav-btn-lg'));
+    }
+  }
 
   const metaRow = document.getElementById('course-meta-row');
   if (metaRow) {
@@ -986,13 +1214,14 @@ function performSearch(query) {
   }
 
   list.innerHTML = '';
-  results.forEach(({ college, specialization, course }) => {
+  results.forEach(({ college, specialization, course }, index) => {
     const card = document.createElement('div');
     card.className = 'search-result-card';
     card.setAttribute('role', 'listitem');
     card.setAttribute('tabindex', '0');
 
     card.innerHTML = `
+      <div class="search-result-num">#${index + 1}</div>
       <div class="search-result-icon" style="background: ${college.color}22;" aria-hidden="true">
         ${college.icon}
       </div>
@@ -1002,10 +1231,14 @@ function performSearch(query) {
           ${getName(college.name)} › ${getName(specialization.name)}
         </div>
       </div>
+      <div class="search-result-fav" style="margin-inline-start: auto; margin-inline-end: 8px;"></div>
       <span style="color:var(--text-muted); font-size:1rem;" aria-hidden="true">
         ${AppState.currentLang === 'ar' ? '←' : '→'}
       </span>
     `;
+
+    const favBtn = createFavButton(college.id, specialization.id, course.id, getName(course.name));
+    card.querySelector('.search-result-fav').appendChild(favBtn);
 
     card.addEventListener('click', () =>
       showCourseDetail(college, specialization, course)
