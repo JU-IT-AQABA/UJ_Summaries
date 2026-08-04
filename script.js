@@ -53,34 +53,40 @@ function buildMergedData() {
   const pendingCourses = JSON.parse(localStorage.getItem('pending_admin_data') || '[]');
 
   pendingCourses.forEach((entry) => {
-    const college = merged.find((c) => c.id === entry.collegeId);
-    if (!college) return;
+    const targets = entry.targetSpecs && entry.targetSpecs.length
+      ? entry.targetSpecs
+      : [{ collegeId: entry.collegeId, specId: entry.specId }];
 
-    const spec = college.specializations.find((s) => s.id === entry.specId);
-    if (!spec) return;
+    targets.forEach((target) => {
+      const college = merged.find((c) => c.id === target.collegeId);
+      if (!college) return;
 
-    // تحقق أن المادة غير مضافة مسبقاً (بالـ id أو الاسم)
-    const exists = spec.courses.find((c) => c.id === entry.id || getName(c.name) === getName(entry.name));
-    if (exists) {
-      const seenPaths = new Set(exists.files.map((f) => f.path || f.id));
-      (entry.files || []).forEach((f) => {
-        const key = f.path || f.id;
-        if (!seenPaths.has(key)) {
-          seenPaths.add(key);
-          exists.files.push(f);
+      const spec = college.specializations.find((s) => s.id === target.specId);
+      if (!spec) return;
+
+      // تحقق أن المادة غير مضافة مسبقاً (بالـ id أو الاسم)
+      const exists = spec.courses.find((c) => c.id === entry.id || getName(c.name) === getName(entry.name));
+      if (exists) {
+        const seenPaths = new Set(exists.files.map((f) => f.path || f.id));
+        (entry.files || []).forEach((f) => {
+          const key = f.path || f.id;
+          if (!seenPaths.has(key)) {
+            seenPaths.add(key);
+            exists.files.push(f);
+          }
+        });
+        if (entry.instructors && entry.instructors.length) {
+          exists.instructors = entry.instructors;
         }
-      });
-      if (entry.instructors && entry.instructors.length) {
-        exists.instructors = entry.instructors;
+      } else {
+        spec.courses.push({
+          id: entry.id,
+          name: entry.name,
+          instructors: entry.instructors,
+          files: entry.files || [],
+        });
       }
-    } else {
-      spec.courses.push({
-        id: entry.id,
-        name: entry.name,
-        instructors: entry.instructors,
-        files: entry.files || [],
-      });
-    }
+    });
   });
 
   // تنظيف وتأكيد عدم وجود أي ملفات مكررة مطلقا
@@ -1331,9 +1337,18 @@ function updateStats() {
 
   const totalColleges = data.filter(c => c.id !== 'common-courses').length;
   const totalSpecs = data.reduce((s, c) => s + (c.id === 'common-courses' ? 0 : c.specializations.length), 0);
-  const totalCourses = data.reduce(
-    (s, c) => s + c.specializations.reduce((ss, sp) => ss + sp.courses.length, 0), 0
-  );
+  
+  // حساب المواد الفريدة فقط (دون تكرار المواد المرتبطة بأكثر من تخصص)
+  const uniqueCourseKeys = new Set();
+  data.forEach((c) => {
+    c.specializations.forEach((sp) => {
+      sp.courses.forEach((co) => {
+        const key = co.id || (typeof co.name === 'string' ? co.name : (co.name.ar || co.name.en || ''));
+        if (key) uniqueCourseKeys.add(key.trim().toLowerCase());
+      });
+    });
+  });
+  const totalCourses = uniqueCourseKeys.size;
   const totalFiles = data.reduce(
     (s, c) => s + c.specializations.reduce(
       (ss, sp) => ss + sp.courses.reduce((sss, co) => sss + co.files.length, 0), 0
