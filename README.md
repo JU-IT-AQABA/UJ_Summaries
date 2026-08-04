@@ -1,10 +1,10 @@
-# 🎓 UJ Summary - منصة ملخصات الجامعة الأردنية
+# 🎓 UJ Summary - منصة ملخصات الجامعة الأردنية (فرع العقبة)
 
 ![Version](https://img.shields.io/badge/version-2.0-blue.svg)
 ![PWA](https://img.shields.io/badge/PWA-Supported-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-purple.svg)
 
-منصة أكاديمية شاملة ومجانية تهدف لتيسير وتبسيط الرحلة الأكاديمية لطلاب الجامعة الأردنية، عبر توفير كافة الملخصات، أسئلة السنوات (Test Banks)، وأوراق العمل المقررة لجميع الكليات والتخصصات في مكان واحد.
+منصة أكاديمية شاملة ومجانية تهدف لتيسير وتبسيط الرحلة الأكاديمية لطلاب الجامعة الأردنية (فرع العقبة)، عبر توفير كافة الملخصات، أسئلة السنوات (Test Banks)، وأوراق العمل المقررة لجميع الكليات والتخصصات في مكان واحد.
 
 🌐 **رابط الموقع المباشر:** [https://ju-it-aqaba.github.io/UJ_Summaries/](https://ju-it-aqaba.github.io/UJ_Summaries/)
 

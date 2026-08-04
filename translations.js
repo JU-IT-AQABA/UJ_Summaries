@@ -10,9 +10,9 @@
 const translations = {
   ar: {
     // Site Meta
-    site_title: "ملخصات الجامعة الأردنية",
-    site_subtitle: "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية",
-    site_description: "ابحث عن ملخصات المواد وتيست البانكات بسهولة",
+    site_title: "ملخصات الجامعة الأردنية - فرع العقبة",
+    site_subtitle: "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية فرع العقبة",
+    site_description: "المنصة الطلابية الشاملة والمجانية لملخصات وتيست بانكات مواد الجامعة الأردنية فرع العقبة",
 
     // Navigation
     nav_home: "الرئيسية",
@@ -22,8 +22,8 @@ const translations = {
     nav_admin: "مجموعة التيليغرام للملخصات",
 
     // Hero Section
-    hero_title: "ملخصات الجامعة الأردنية",
-    hero_subtitle: "اعثر على ملخصات المواد وتيست بانكات جميع الكليات بسهولة",
+    hero_title: "ملخصات الجامعة الأردنية - فرع العقبة",
+    hero_subtitle: "اعثر على ملخصات المواد وتيست بانكات جميع كليات فرع العقبة بسهولة",
     search_placeholder: "ابحث عن مادة، تخصص، أو مدرس...",
     search_button: "بحث",
 
@@ -99,7 +99,7 @@ const translations = {
     // Footer
     footer_rights: "جميع الحقوق محفوظة",
     footer_made_with: "صُنع بـ",
-    footer_for: "لطلاب الجامعة الأردنية",
+    footer_for: "لطلاب الجامعة الأردنية - فرع العقبة",
     footer_disclaimer: ".هذا الموقع غير رسمي وهو منصة طلابية مستقلة من اعداد يوسف خالد عبدالهادي",
 
     // Admin Panel
@@ -267,9 +267,9 @@ const translations = {
 
   en: {
     // Site Meta
-    site_title: "UJ Summaries",
-    site_subtitle: "University of Jordan Course Summaries & Test Banks Platform",
-    site_description: "Find course summaries and test banks easily",
+    site_title: "UJ Aqaba Summaries",
+    site_subtitle: "University of Jordan (Aqaba Branch) Course Summaries & Test Banks Platform",
+    site_description: "Find course summaries and test banks for UJ Aqaba branch easily",
 
     // Navigation
     nav_home: "Home",
@@ -279,8 +279,8 @@ const translations = {
     nav_admin: "Telegram summaries group",
 
     // Hero Section
-    hero_title: "University of Jordan Summaries",
-    hero_subtitle: "Find course summaries and test banks for all colleges easily",
+    hero_title: "University of Jordan - Aqaba Summaries",
+    hero_subtitle: "Find course summaries and test banks for all faculties at UJ Aqaba easily",
     search_placeholder: "Search for a course, specialization, or instructor...",
     search_button: "Search",
 
@@ -356,7 +356,7 @@ const translations = {
     // Footer
     footer_rights: "All rights reserved",
     footer_made_with: "Made with",
-    footer_for: "for University of Jordan students",
+    footer_for: "for University of Jordan - Aqaba Branch students",
     footer_disclaimer: "This website is unofficial, and it is an independent student platform prepared by Yousef Khaled Abdulhadi.",
 
     // Admin Panel
@@ -524,9 +524,9 @@ const translations = {
 
   fr: {
     // Site Meta
-    site_title: "Résumés UJ",
-    site_subtitle: "Plateforme de résumés de cours et banques de tests de l'Université de Jordanie",
-    site_description: "Trouvez facilement des résumés de cours et des banques de tests",
+    site_title: "Résumés UJ Aqaba",
+    site_subtitle: "Plateforme de résumés de cours et banques de tests de l'Université de Jordanie (Branche d'Aqaba)",
+    site_description: "Trouvez facilement des résumés de cours et des banques de tests pour l'Université de Jordanie à Aqaba",
 
     // Navigation
     nav_home: "Accueil",
@@ -536,8 +536,8 @@ const translations = {
     nav_admin: "Groupe Telegram des résumés",
 
     // Hero Section
-    hero_title: "Résumés de l'Université de Jordanie",
-    hero_subtitle: "Trouvez facilement des résumés de cours et des banques de tests pour toutes les facultés",
+    hero_title: "Résumés Université de Jordanie - Branche d'Aqaba",
+    hero_subtitle: "Trouvez facilement des résumés de cours et des banques de tests pour toutes les facultés d'Aqaba",
     search_placeholder: "Rechercher un cours, une spécialisation ou un enseignant...",
     search_button: "Rechercher",
 
@@ -613,7 +613,7 @@ const translations = {
     // Footer
     footer_rights: "Tous droits réservés",
     footer_made_with: "Fait avec",
-    footer_for: "pour les étudiants de l'Université de Jordanie",
+    footer_for: "pour les étudiants de l'Université de Jordanie - Branche d'Aqaba",
     footer_disclaimer: "This website is unofficial, and it is an independent student platform prepared by Yousef Khaled Abdulhadi.",
 
     // Admin Panel

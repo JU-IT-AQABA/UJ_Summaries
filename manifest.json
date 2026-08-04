@@ -1,7 +1,7 @@
 {
-  "name": "UJ Summary",
-  "short_name": "UJ Summary",
-  "description": "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية",
+  "name": "ملخصات الجامعة الأردنية فرع العقبة - UJ Summary Aqaba",
+  "short_name": "ملخصات العقبة",
+  "description": "منصة ملخصات وتيست بانكات مواد الجامعة الأردنية فرع العقبة",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090d16",
